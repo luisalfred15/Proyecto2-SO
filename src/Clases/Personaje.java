@@ -26,7 +26,8 @@ public class Personaje {
     public Personaje(String id, String nombre, Propiedades propiedades) throws IOException {
         this.id = id;
         this.nombre = nombre;
-        this.imagen = ImageIO.read(new File(nombre + ".png"));
+        String ruta = "src\\ImagenesPersonajes\\" + nombre + ".png";
+        this.imagen = ImageIO.read(new File(ruta));
         this.propiedades = propiedades;
         this.contador = 0;
     }
@@ -43,6 +44,9 @@ public class Personaje {
     public void determinarTipo() {
         int contadorCalidad = 0;
         
+        Propiedades props = this.getPropiedades();
+        
+        // Se determina la calidad de manera aleatoria
         Random random = new Random();
         
         int randHabilidades = random.nextInt(101);
@@ -50,13 +54,12 @@ public class Personaje {
         int randFuerza = random.nextInt(101);
         int randAgilidad = random.nextInt(101);
         
-        Propiedades props = this.getPropiedades();
         
         if (randHabilidades < 60) {
-            // Si se selecciona que es de calidad, aumenta el contador y no se modifica la cantidad de la propiedad
+            // Si se selecciona que es de calidad, se deja el valor
             contadorCalidad++;
         } else {
-            // Si no, se multiplica por -1
+            // Si no, se multiplica por -1 el valor de la variable transitoria
             props.setHabilidades(props.getHabilidades() * -1);
         }
         
@@ -92,31 +95,35 @@ public class Personaje {
         
         Propiedades p = this.getPropiedades();
         
+        System.out.println("Habs: " + p.getHabilidades());
         if (p.getHabilidades() > 0) {
-            System.out.println("Habilidades es de calidad");
+            System.out.println("Calidad Habs: Si");
         } else {
-            System.out.println("Habilidades no es de calidad");
+            System.out.println("Calidad Habs: No");
         }
         
+        System.out.println("HP: " + p.getPuntosVida());
         if (p.getPuntosVida() > 0) {
-            System.out.println("Puntos de vida es de calidad");
+            System.out.println("Calidad HP: Si");
         } else {
-            System.out.println("Puntos de vida no es de calidad");
+            System.out.println("Calidad HP: No");
         }
         
+        System.out.println("Fuerza: " + p.getFuerza());
         if (p.getFuerza() > 0) {
-            System.out.println("Fuerza es de calidad");
+            System.out.println("Calidad Fuerza: Si");
         } else {
-            System.out.println("Fuerza no es de calidad");
+            System.out.println("Calidad Fuerza: No");
         }
         
+        System.out.println("Agilidad: " + p.getAgilidad());
         if (p.getAgilidad() > 0) {
-            System.out.println("Agilidad es de calidad");
+            System.out.println("Calidad Agilidad: Si");
         } else {
-            System.out.println("Agilidad no es de calidad");
+            System.out.println("Calidad Agilidad: No");
         }
         
-        System.out.println("Prioridad de " + this.getNombre() + " es " + this.getTipo());
+        System.out.println("Prioridad de " + this.getNombre() + " es " + this.getTipo() + "\n");
     }
 
     /**
