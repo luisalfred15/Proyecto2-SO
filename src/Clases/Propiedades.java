@@ -14,20 +14,12 @@ public class Propiedades {
     private int fuerza;
     private int agilidad;
     // 1 si es de calidad, 0 si no es de calidad
-    private int calidadHabs;
-    private int calidadVida;
-    private int calidadFuerza;
-    private int calidadAgilidad;
     
-    public Propiedades(int habilidades, int puntosVida, int fuerza, int agilidad, int calidadHabs, int calidadVida, int calidadFuerza, int calidadAgilidad) {
+    public Propiedades(int habilidades, int puntosVida, int fuerza, int agilidad) {
         this.habilidades = habilidades;
         this.puntosVida = puntosVida;
         this.fuerza = fuerza;
-        this.habilidades = agilidad;
-        this.calidadHabs = calidadHabs;
-        this.calidadVida = calidadVida;
-        this.calidadFuerza = calidadFuerza;
-        this.calidadAgilidad = calidadAgilidad;
+        this.agilidad = agilidad;
         
         // las cantidades de cada atributo podrian ser enteras, de forma que si esta es negativa, no es de calidad, y si es positiva, es de calidad
     }
@@ -86,61 +78,5 @@ public class Propiedades {
      */
     public void setAgilidad(int agilidad) {
         this.agilidad = agilidad;
-    }
-
-    /**
-     * @return the calidadHabs
-     */
-    public int getCalidadHabs() {
-        return calidadHabs;
-    }
-
-    /**
-     * @param calidadHabs the calidadHabs to set
-     */
-    public void setCalidadHabs(int calidadHabs) {
-        this.calidadHabs = calidadHabs;
-    }
-
-    /**
-     * @return the calidadVida
-     */
-    public int getCalidadVida() {
-        return calidadVida;
-    }
-
-    /**
-     * @param calidadVida the calidadVida to set
-     */
-    public void setCalidadVida(int calidadVida) {
-        this.calidadVida = calidadVida;
-    }
-
-    /**
-     * @return the calidadFuerza
-     */
-    public int getCalidadFuerza() {
-        return calidadFuerza;
-    }
-
-    /**
-     * @param calidadFuerza the calidadFuerza to set
-     */
-    public void setCalidadFuerza(int calidadFuerza) {
-        this.calidadFuerza = calidadFuerza;
-    }
-
-    /**
-     * @return the calidadAgilidad
-     */
-    public int getCalidadAgilidad() {
-        return calidadAgilidad;
-    }
-
-    /**
-     * @param calidadAgilidad the calidadAgilidad to set
-     */
-    public void setCalidadAgilidad(int calidadAgilidad) {
-        this.calidadAgilidad = calidadAgilidad;
     }
 }

@@ -4,45 +4,32 @@
  */
 package Clases;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
+import javax.imageio.ImageIO;
 
 /**
  *
  * @author luisa
  */
-public class Personaje { // se pueden tener personajes repetidos pero de diferente Tipo? O un personaje debe tener un arreglo de Tipoes?
+public class Personaje {
     
     private String id;
     private String nombre;
-    private int imagen;
+    private BufferedImage imagen;
     private int tipo; // tipo puede ser excepcional (1), promedio (2) o deficiente (3)
     private Propiedades propiedades;
     private int contador;
-    //static int contadorId = 0;
-    //int contadorCompania = 0;
     
-    public Personaje(String nombre, int imagen, Propiedades propiedades, int contador) {
+    public Personaje(String id, String nombre, Propiedades propiedades) throws IOException {
+        this.id = id;
         this.nombre = nombre;
-        this.imagen = imagen;
+        this.imagen = ImageIO.read(new File(nombre + ".png"));
         this.propiedades = propiedades;
         this.contador = 0;
-        
-        /*
-        contadorId++;
-        this.generarId();
-        this.determinarTipo();
-        */
     }
-    /*
-    public void generarId() {
-        if (this.contadorId < 10) {
-            this.id = "Z" + this.contadorCompania;
-            contadorCompania++;
-        } else {
-            this.id = "S" + this.contadorCompania;
-        }
-    }
-    */
     
     public void aumentarPrioridad() {
         if (this.getContador() == 8) {
@@ -58,29 +45,37 @@ public class Personaje { // se pueden tener personajes repetidos pero de diferen
         
         Random random = new Random();
         
-        int randHabilidades = random.nextInt(100);
-        int randVida = random.nextInt(100);
-        int randFuerza = random.nextInt(100);
-        int randAgilidad = random.nextInt(100);
+        int randHabilidades = random.nextInt(101);
+        int randVida = random.nextInt(101);
+        int randFuerza = random.nextInt(101);
+        int randAgilidad = random.nextInt(101);
+        
+        Propiedades props = this.getPropiedades();
         
         if (randHabilidades < 60) {
-            this.getPropiedades().setCalidadHabs(1);
+            // Si se selecciona que es de calidad, aumenta el contador y no se modifica la cantidad de la propiedad
             contadorCalidad++;
+        } else {
+            // Si no, se multiplica por -1
+            props.setHabilidades(props.getHabilidades() * -1);
         }
         
         if (randVida < 70) {
-            this.getPropiedades().setCalidadVida(1);
             contadorCalidad++;
+        } else {
+            props.setPuntosVida(props.getPuntosVida() * -1);
         }
         
         if (randFuerza < 50) {
-            this.getPropiedades().setCalidadFuerza(1);
             contadorCalidad++;
+        } else {
+            props.setFuerza(props.getFuerza() * -1);
         }
         
         if (randAgilidad < 40) {
-            this.getPropiedades().setCalidadAgilidad(1);
             contadorCalidad++;
+        } else {
+            props.setAgilidad(props.getAgilidad() * -1);
         }
         
         if (contadorCalidad >= 3) {
@@ -90,6 +85,38 @@ public class Personaje { // se pueden tener personajes repetidos pero de diferen
         } else {
             this.setTipo(3);
         }
+    }
+    
+    public void imprimirInfo() {
+        System.out.println("Propiedades de " + this.nombre);
+        
+        Propiedades p = this.getPropiedades();
+        
+        if (p.getHabilidades() > 0) {
+            System.out.println("Habilidades es de calidad");
+        } else {
+            System.out.println("Habilidades no es de calidad");
+        }
+        
+        if (p.getPuntosVida() > 0) {
+            System.out.println("Puntos de vida es de calidad");
+        } else {
+            System.out.println("Puntos de vida no es de calidad");
+        }
+        
+        if (p.getFuerza() > 0) {
+            System.out.println("Fuerza es de calidad");
+        } else {
+            System.out.println("Fuerza no es de calidad");
+        }
+        
+        if (p.getAgilidad() > 0) {
+            System.out.println("Agilidad es de calidad");
+        } else {
+            System.out.println("Agilidad no es de calidad");
+        }
+        
+        System.out.println("Prioridad de " + this.getNombre() + " es " + this.getTipo());
     }
 
     /**
@@ -123,14 +150,14 @@ public class Personaje { // se pueden tener personajes repetidos pero de diferen
     /**
      * @return the imagen
      */
-    public int getImagen() {
+    public BufferedImage getImagen() {
         return imagen;
     }
 
     /**
      * @param imagen the imagen to set
      */
-    public void setImagen(int imagen) {
+    public void setImagen(BufferedImage imagen) {
         this.imagen = imagen;
     }
 
@@ -175,6 +202,8 @@ public class Personaje { // se pueden tener personajes repetidos pero de diferen
     public void setContador(int contador) {
         this.contador = contador;
     }
+
+    
 
     
    
