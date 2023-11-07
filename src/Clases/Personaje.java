@@ -9,6 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,11 +29,11 @@ public class Personaje {
     public Personaje(String id, String nombre, Propiedades propiedades) throws IOException {
         this.id = id;
         this.nombre = nombre;
-        this.imagen = ImageIO.read(new File(nombre + ".png"));
+        this.imagen = ImageIO.read(new File("src/ImagenesPersonajes/"+nombre + ".png"));
         this.propiedades = propiedades;
         this.contador = 0;
     }
-    
+
     public void aumentarPrioridad() {
         if (this.getContador() == 8) {
             if (this.getTipo() != 1) { // tipo es lo mismo que prioridad
