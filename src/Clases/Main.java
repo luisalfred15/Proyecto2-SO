@@ -4,6 +4,7 @@
  */
 package Clases;
 
+import Interfaz.Pantalla;
 import java.io.IOException;
 
 /**
@@ -32,6 +33,8 @@ public class Main {
         link.imprimirInfo();
         zelda.imprimirInfo();
         ganon.imprimirInfo();
+        
+        Pantalla pantalla = new Pantalla();
     }
     
 }
