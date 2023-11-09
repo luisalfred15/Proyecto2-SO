@@ -29,8 +29,8 @@ public class Personaje {
         this.nombre = nombre;
         String rutaImagen = "src\\Imagenes\\" + nombre + ".png";
         this.imagen = ImageIO.read(new File(rutaImagen));
-        //String rutaIcono = "src\\Imagenes\\" + nombre + "2.png";
-        //this.imagen = ImageIO.read(new File(rutaIcono));
+        String rutaIcono = "src\\Imagenes\\" + nombre + "2.png";
+        this.imagen = ImageIO.read(new File(rutaIcono));
         this.propiedades = propiedades;
         this.contador = 0;
     }

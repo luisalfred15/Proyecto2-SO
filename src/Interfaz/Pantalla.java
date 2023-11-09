@@ -4,20 +4,86 @@
  */
 package Interfaz;
 
+import Clases.Personaje;
+import Clases.Propiedades;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author luisa
  */
 public class Pantalla extends javax.swing.JFrame {
 
+    Personaje[] poolZelda = new Personaje[10];
+    Personaje[] poolStreet = new Personaje[10];
+    int velocidadPelea;
+
     /**
      * Creates new form Pantalla
      */
-    public Pantalla() {
+    public Pantalla() throws IOException {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         this.setResizable(false);
         initComponents();
+
+        Propiedades p1 = new Propiedades(1, 1, 1, 1);
+        Propiedades p2 = new Propiedades(2, 2, 2, 2);
+        Propiedades p3 = new Propiedades(3, 3, 3, 3);
+        Propiedades p4 = new Propiedades(4, 4, 4, 4);
+        Propiedades p5 = new Propiedades(5, 5, 5, 5);
+        Propiedades p6 = new Propiedades(6, 6, 6, 6);
+        Propiedades p7 = new Propiedades(7, 7, 7, 7);
+        Propiedades p8 = new Propiedades(8, 8, 8, 8);
+        Propiedades p9 = new Propiedades(9, 9, 9, 9);
+        Propiedades p10 = new Propiedades(10, 10, 10, 10);
+        Propiedades p11 = new Propiedades(11, 11, 11, 11);
+        Propiedades p12 = new Propiedades(12, 12, 12, 12);
+        Propiedades p13 = new Propiedades(13, 13, 13, 13);
+        Propiedades p14 = new Propiedades(14, 14, 14, 14);
+        Propiedades p15 = new Propiedades(15, 15, 15, 15);
+        Propiedades p16 = new Propiedades(16, 16, 16, 16);
+        Propiedades p17 = new Propiedades(17, 17, 17, 17);
+        Propiedades p18 = new Propiedades(18, 18, 18, 18);
+        Propiedades p19 = new Propiedades(19, 19, 19, 19);
+        Propiedades p20 = new Propiedades(20, 20, 20, 20);
+
+        poolZelda[0] = new Personaje("z1", "Daruk", p1);
+        poolZelda[1] = new Personaje("z2", "Ganondorf", p2);
+        poolZelda[2] = new Personaje("z3", "Link", p3);
+        poolZelda[3] = new Personaje("z4", "Midna", p4);
+        poolZelda[4] = new Personaje("z5", "Mipha", p5);
+        poolZelda[5] = new Personaje("z6", "Revali", p6);
+        poolZelda[6] = new Personaje("z7", "Sheik", p7);
+        poolZelda[7] = new Personaje("z8", "Skull Kid", p8);
+        poolZelda[8] = new Personaje("z9", "Urbosa", p9);
+        poolZelda[9] = new Personaje("z10", "Zelda", p10);
+
+        poolStreet[0] = new Personaje("s1", "Blanka", p11);
+        poolStreet[1] = new Personaje("s2", "Chun-Li", p12);
+        poolStreet[2] = new Personaje("s3", "Dhalsim", p13);
+        poolStreet[3] = new Personaje("s4", "Edmond Honda", p14);
+        poolStreet[4] = new Personaje("s5", "Guile", p15);
+        poolStreet[5] = new Personaje("s6", "Juri Han", p16);
+        poolStreet[6] = new Personaje("s7", "Ken", p17);
+        poolStreet[7] = new Personaje("s8", "Manon", p18);
+        poolStreet[8] = new Personaje("s9", "Ryu", p19);
+        poolStreet[9] = new Personaje("s10", "Zangief", p20);
+
+        for (int i = 0; i < 10; i++) {
+            poolZelda[i].determinarTipo();
+            poolStreet[i].determinarTipo();
+        }
+
+        for (int i = 0; i < 10; i++) {
+            poolZelda[i].imprimirInfo();
+        }
+
+        for (int i = 0; i < 10; i++) {
+            poolStreet[i].imprimirInfo();
+        }
     }
 
     /**
@@ -30,14 +96,42 @@ public class Pantalla extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jSlider1 = new javax.swing.JSlider();
+        velocidad = new javax.swing.JSlider();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel1.add(jSlider1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 750, 370, 20));
+
+        velocidad.setMajorTickSpacing(50);
+        velocidad.setMinorTickSpacing(10);
+        velocidad.setPaintTicks(true);
+        velocidad.setOpaque(false);
+        velocidad.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                velocidadStateChanged(evt);
+            }
+        });
+        jPanel1.add(velocidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 730, 450, 50));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("1");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 770, 20, -1));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("0");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 770, 40, -1));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel5.setText("0,5");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 770, 40, -1));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesInterfaz/pantalla_fondo.png"))); // NOI18N
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 860));
@@ -46,6 +140,10 @@ public class Pantalla extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void velocidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_velocidadStateChanged
+        velocidadPelea = velocidad.getValue();
+    }//GEN-LAST:event_velocidadStateChanged
 
     /**
      * @param args the command line arguments
@@ -77,14 +175,21 @@ public class Pantalla extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Pantalla().setVisible(true);
+                try {
+                    new Pantalla().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JSlider jSlider1;
+    private javax.swing.JSlider velocidad;
     // End of variables declaration//GEN-END:variables
 }
