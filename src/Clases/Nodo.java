@@ -11,9 +11,9 @@ package Clases;
 public class Nodo {
     
     private Nodo nodoSiguiente;
-    private Object datos;
+    private Personaje datos;
     
-    public Nodo(Object datos) {
+    public Nodo(Personaje datos) {
         this.nodoSiguiente = null;
         this.datos = datos;
     }
@@ -35,14 +35,14 @@ public class Nodo {
     /**
      * @return the datos
      */
-    public Object getDatos() {
+    public Personaje getDatos() {
         return datos;
     }
 
     /**
      * @param datos the datos to set
      */
-    public void setDatos(Object datos) {
+    public void setDatos(Personaje datos) {
         this.datos = datos;
     }
     

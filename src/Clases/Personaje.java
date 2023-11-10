@@ -38,7 +38,7 @@ public class Personaje {
         if (this.getContador() == 8) {
             if (this.getTipo() != 1) { // tipo es lo mismo que prioridad
                 this.setContador(0);
-                this.setTipo(this.getTipo() + 1);
+                this.setTipo(this.getTipo() - 1);
             }
         }
     }
