@@ -72,8 +72,10 @@ public class SistemaOperativo {
             System.out.println("error");
         }
     }
-    
+    //Saca un personaje de su cola de prioridad, si no hay elementos en una cola pasa a la siguiente. Si no hay elementos en ninguna cola pasa al protocolo de emergencia
     public Personaje escogerPersonajes(Cola P1, Cola P2, Cola P3, Semaphore Semaforo) throws InterruptedException{
+        try{
+            
         Personaje aux= P1.getNodoCabeza().getDatos();
         if(!P1.esVacia()){
             aux=P1.getNodoCabeza().getDatos();
@@ -94,6 +96,13 @@ public class SistemaOperativo {
             System.out.println("No hay personajes disponibles, insertar 10 mas");
         }
         return aux;
+        }catch(Exception err){
+            return null;
+    }
+   }  
+    //Agregar personajes cada dos ciclos de revision
+    public void agregarPersonaje(){
+        
     }
                 
                 
