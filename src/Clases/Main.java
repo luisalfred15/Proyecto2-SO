@@ -4,6 +4,9 @@
  */
 package Clases;
 
+import Interfaz.Pantalla;
+import java.io.IOException;
+
 /**
  *
  * @author luisa
@@ -13,8 +16,8 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args) throws IOException {
+        Pantalla pantalla = new Pantalla();
     }
     
 }
