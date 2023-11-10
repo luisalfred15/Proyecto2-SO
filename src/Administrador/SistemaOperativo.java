@@ -11,7 +11,7 @@ import java.util.concurrent.Semaphore;
  *
  * @author raco1
  */
-public class SistemaOperativo {
+public class SistemaOperativo extends Thread {
 
     private Personaje fighterZ;
     private Personaje figtherST;
