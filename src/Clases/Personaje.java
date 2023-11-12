@@ -22,6 +22,8 @@ public class Personaje {
     private String id;
     private String nombre;
     private BufferedImage imagen;
+    private BufferedImage icono;
+    private String rutaIcon;
     private int tipo; // tipo puede ser excepcional (1), promedio (2) o deficiente (3)
     private Propiedades propiedades;
     private int contador;
@@ -29,7 +31,13 @@ public class Personaje {
     public Personaje(String id, String nombre, Propiedades propiedades) throws IOException {
         this.id = id;
         this.nombre = nombre;
-        this.imagen = ImageIO.read(new File("src/ImagenesPersonajes/"+nombre + ".png"));
+
+        String rutaImagen = "src\\Imagenes\\" + nombre + ".png";
+        this.imagen = ImageIO.read(new File(rutaImagen));
+        String rutaIcono = "src\\Imagenes\\" + nombre + "2.png";
+        this.rutaIcon=rutaIcono;
+        this.imagen = ImageIO.read(new File(rutaIcono));
+
         this.propiedades = propiedades;
         this.contador = 0;
     }
@@ -46,6 +54,9 @@ public class Personaje {
     public void determinarTipo() {
         int contadorCalidad = 0;
         
+        Propiedades props = this.getPropiedades();
+        
+        // Se determina la calidad de manera aleatoria
         Random random = new Random();
         
         int randHabilidades = random.nextInt(101);
@@ -53,29 +64,28 @@ public class Personaje {
         int randFuerza = random.nextInt(101);
         int randAgilidad = random.nextInt(101);
         
-        Propiedades props = this.getPropiedades();
         
-        if (randHabilidades < 60) {
-            // Si se selecciona que es de calidad, aumenta el contador y no se modifica la cantidad de la propiedad
+        if (randHabilidades <= 60) {
+            // Si se selecciona que es de calidad, se deja el valor
             contadorCalidad++;
         } else {
-            // Si no, se multiplica por -1
+            // Si no, se multiplica por -1 el valor de la variable transitoria
             props.setHabilidades(props.getHabilidades() * -1);
         }
         
-        if (randVida < 70) {
+        if (randVida <= 70) {
             contadorCalidad++;
         } else {
             props.setPuntosVida(props.getPuntosVida() * -1);
         }
         
-        if (randFuerza < 50) {
+        if (randFuerza <= 50) {
             contadorCalidad++;
         } else {
             props.setFuerza(props.getFuerza() * -1);
         }
         
-        if (randAgilidad < 40) {
+        if (randAgilidad <= 40) {
             contadorCalidad++;
         } else {
             props.setAgilidad(props.getAgilidad() * -1);
@@ -91,35 +101,39 @@ public class Personaje {
     }
     
     public void imprimirInfo() {
-        System.out.println("Propiedades de " + this.nombre);
+        System.out.println("Propiedades de " + this.getNombre());
         
         Propiedades p = this.getPropiedades();
         
+        System.out.println("Habs: " + p.getHabilidades());
         if (p.getHabilidades() > 0) {
-            System.out.println("Habilidades es de calidad");
+            System.out.println("Calidad Habs: Si");
         } else {
-            System.out.println("Habilidades no es de calidad");
+            System.out.println("Calidad Habs: No");
         }
         
+        System.out.println("HP: " + p.getPuntosVida());
         if (p.getPuntosVida() > 0) {
-            System.out.println("Puntos de vida es de calidad");
+            System.out.println("Calidad HP: Si");
         } else {
-            System.out.println("Puntos de vida no es de calidad");
+            System.out.println("Calidad HP: No");
         }
         
+        System.out.println("Fuerza: " + p.getFuerza());
         if (p.getFuerza() > 0) {
-            System.out.println("Fuerza es de calidad");
+            System.out.println("Calidad Fuerza: Si");
         } else {
-            System.out.println("Fuerza no es de calidad");
+            System.out.println("Calidad Fuerza: No");
         }
         
+        System.out.println("Agilidad: " + p.getAgilidad());
         if (p.getAgilidad() > 0) {
-            System.out.println("Agilidad es de calidad");
+            System.out.println("Calidad Agilidad: Si");
         } else {
-            System.out.println("Agilidad no es de calidad");
+            System.out.println("Calidad Agilidad: No");
         }
         
-        System.out.println("Prioridad de " + this.getNombre() + " es " + this.getTipo());
+        System.out.println("Prioridad de " + this.getNombre() + " es " + this.getTipo() + "\n");
     }
 
     /**
@@ -204,6 +218,34 @@ public class Personaje {
      */
     public void setContador(int contador) {
         this.contador = contador;
+    }
+
+    /**
+     * @return the icono
+     */
+    public BufferedImage getIcono() {
+        return icono;
+    }
+
+    /**
+     * @param icono the icono to set
+     */
+    public void setIcono(BufferedImage icono) {
+        this.icono = icono;
+    }
+
+    /**
+     * @return the rutaIcon
+     */
+    public String getRutaIcon() {
+        return rutaIcon;
+    }
+
+    /**
+     * @param rutaIcon the rutaIcon to set
+     */
+    public void setRutaIcon(String rutaIcon) {
+        this.rutaIcon = rutaIcon;
     }
 
     

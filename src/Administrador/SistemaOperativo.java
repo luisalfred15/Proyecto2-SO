@@ -4,6 +4,7 @@ package Administrador;
 
 import Clases.Cola;
 import Clases.Personaje;
+import Interfaz.Pantalla;
 import java.io.IOException;
 import java.util.concurrent.Semaphore;
 
@@ -15,24 +16,12 @@ public class SistemaOperativo extends Thread {
 
     private Personaje fighterZ;
     private Personaje figtherST;
-//    private Cola zColaP1;
-//    private Cola zColaP2;
-//    private Cola zColaP3;
-//    private Cola zRefuerzo;
-//    private Cola stColaP1;
-//    private Cola stColaP2;
-//    private Cola stColaP3;
-//    private Cola stRefuerzo;
+
     int cicloCont;
     Semaphore zSemaforo;
     Semaphore stSemaforo;
     boolean turno;
-//    public SistemaOperativo(Cola zCola1, Cola zCola2, Cola zCola3, Cola zRefuerzo, Cola stCola1, Cola stCola2, Cola stCola3, Cola stRefuerzo){
-//        this.zColaP1=zCola1;
-//        this.zColaP2=zCola2;
-//        this.zColaP3= zCola3;
-//        this.zRefuerzo=zRefuerzo;
-//    }
+
     public SistemaOperativo(){
         this.cicloCont=0;
         this.turno=false;
@@ -104,8 +93,36 @@ public class SistemaOperativo extends Thread {
     public void agregarPersonaje(){
         
     }
-                
-                
+       //metodo a ser ejecuto cuando inicie la simulacion          
+     public void llenarColas() {
+//         Personaje[] arrayZ= Pantalla.getPoolZelda();
+//         Personaje[] arraySt=Pantalla.getPoolStreet();
+//         Cola zP1= Pantalla.getzColaP1();
+//         Cola zP2= Pantalla.getzColaP2();
+//         Cola zP3= Pantalla.getzColaP3();
+//         Cola stP1= Pantalla.getStColaP1();
+//         Cola stP2= Pantalla.getStColaP2();
+//         Cola stP3= Pantalla.getStColaP3();
+//         for (Personaje x: arrayZ) {
+//             if(x.getTipo()==1){
+//                zP1.encolar(x);
+//             }else if(x.getTipo()==2){
+//                 zP2.encolar(x);
+//             }else if(x.getTipo()==3){
+//                 zP3.encolar(x);
+//             }
+//         }
+//         for (Personaje x: arraySt) {
+//             if(x.getTipo()==1){
+//                stP1.encolar(x);
+//             }else if(x.getTipo()==2){
+//                 stP2.encolar(x);
+//             }else if(x.getTipo()==3){
+//                 stP3.encolar(x);
+//             }
+//         }
+            
+     }           
             
             
     
