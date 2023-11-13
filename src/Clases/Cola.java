@@ -23,7 +23,7 @@ public class Cola {
     }
     
     public boolean esVacia() {
-        return this.getNodoCola() == null;
+        return this.getNodoCola()  == null;
     }
     
     public void vaciar() {
@@ -84,6 +84,22 @@ public class Cola {
             return impresion;
         }
         return "Vacia";
+    }
+    public void actualizarPersonajesCont(){
+        if (!this.esVacia()) {
+            String impresion = "";
+            for (int i = 0; i < this.longitud; i++) {
+                Nodo nodoActual = this.nodoCabeza;
+                nodoActual.getDatos().aumentarPrioridad();
+                nodoActual.getDatos().setContador(nodoActual.getDatos().getContador()+1);
+                nodoActual.getDatos().aumentarPrioridad();
+                desencolar();
+                impresion += nodoActual.getDatos().getNombre() + ", ";
+                encolar(nodoActual.getDatos());
+                System.out.println("hola");
+            }
+            
+        }
     }
     
     public String imprimirRecur(String impresion) {

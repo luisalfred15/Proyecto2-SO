@@ -24,6 +24,7 @@ public class Personaje {
     private BufferedImage imagen;
     private BufferedImage icono;
     private String rutaIcon;
+    private String rutaImagen;
     private int tipo; // tipo puede ser excepcional (1), promedio (2) o deficiente (3)
     private Propiedades propiedades;
     private int contador;
@@ -36,6 +37,7 @@ public class Personaje {
         this.imagen = ImageIO.read(new File(rutaImagen));
         String rutaIcono = "src\\Imagenes\\" + nombre + "2.png";
         this.rutaIcon=rutaIcono;
+        this.rutaImagen=rutaImagen;
         this.imagen = ImageIO.read(new File(rutaIcono));
 
         this.propiedades = propiedades;
@@ -246,6 +248,20 @@ public class Personaje {
      */
     public void setRutaIcon(String rutaIcon) {
         this.rutaIcon = rutaIcon;
+    }
+
+    /**
+     * @return the rutaImagen
+     */
+    public String getRutaImagen() {
+        return rutaImagen;
+    }
+
+    /**
+     * @param rutaImagen the rutaImagen to set
+     */
+    public void setRutaImagen(String rutaImagen) {
+        this.rutaImagen = rutaImagen;
     }
 
     

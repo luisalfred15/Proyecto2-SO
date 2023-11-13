@@ -4,6 +4,7 @@
  */
 package Interfaz;
 
+import Administrador.SistemaOperativo;
 import Clases.Cola;
 import Clases.Personaje;
 import Clases.Propiedades;
@@ -15,6 +16,7 @@ import java.awt.Panel;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
@@ -48,7 +50,14 @@ public class Pantalla extends javax.swing.JFrame {
     private static Cola stColaP2;
     private static Cola stColaP3;
     private static Cola stRefuerzo;
-
+    
+    public static volatile Semaphore zSemaforo;
+    public static volatile Semaphore stSemaforo;
+    
+    public static Personaje zFigther;
+    public static Personaje stFigther;
+    
+    public SistemaOperativo SO= new SistemaOperativo();
     /**
      * Creates new form Pantalla
      */
@@ -134,6 +143,8 @@ public class Pantalla extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        stFigtherLabel = new javax.swing.JLabel();
+        zFighterLabel = new javax.swing.JLabel();
         jScrollPane8 = new javax.swing.JScrollPane();
         stPanel4 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -152,6 +163,8 @@ public class Pantalla extends javax.swing.JFrame {
         zPanelP1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         velocidad = new javax.swing.JSlider();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -163,6 +176,22 @@ public class Pantalla extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        stFigtherLabel.setText("stFigther");
+        stFigtherLabel.setToolTipText("");
+        stFigtherLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        stFigtherLabel.setFocusable(false);
+        stFigtherLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        stFigtherLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanel1.add(stFigtherLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 300, 180, 160));
+
+        zFighterLabel.setText("zFigther");
+        zFighterLabel.setToolTipText("");
+        zFighterLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        zFighterLabel.setFocusable(false);
+        zFighterLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        zFighterLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanel1.add(zFighterLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 300, 180, 160));
 
         stPanel4.setBackground(new java.awt.Color(0, 0, 0));
         jScrollPane8.setViewportView(stPanel4);
@@ -206,13 +235,13 @@ public class Pantalla extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 290, 100));
 
-        jButton1.setText("jButton1");
+        jButton1.setText("meter en batalla");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 20, 100, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 20, 120, -1));
 
         jButton2.setText("borrar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -221,6 +250,22 @@ public class Pantalla extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 20, -1, -1));
+
+        jButton3.setText("revisar colas");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 60, -1, -1));
+
+        jButton4.setText("aumentar priodidad");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 70, -1, -1));
 
         velocidad.setMajorTickSpacing(50);
         velocidad.setMinorTickSpacing(10);
@@ -259,7 +304,7 @@ public class Pantalla extends javax.swing.JFrame {
     private void velocidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_velocidadStateChanged
         velocidadPelea = velocidad.getValue();
     }//GEN-LAST:event_velocidadStateChanged
-    
+    //LLena las colas al inicio de la simulacion
     public void llenarColas(){
         
          for (Personaje x: poolZelda) {
@@ -287,6 +332,8 @@ public class Pantalla extends javax.swing.JFrame {
              }
          }
     }
+    
+    //Crea las labels que van a irse agregando a las colas que se muestran en interfaz
     public void  labelCreation(Personaje personaje, JPanel p){
         String texto= personaje.getId() ;
         JLabel etiqueta= new JLabel(texto);
@@ -307,18 +354,71 @@ public class Pantalla extends javax.swing.JFrame {
         p.updateUI();
     }
     
+    //Monta los personajes en Las variables peleador 
+    public static void pelea(Personaje p, JLabel l){
+        
+        ImageIcon fot= new ImageIcon(p.getRutaImagen());
+        ImageIcon icon=new ImageIcon(fot.getImage().getScaledInstance(l.getWidth(), l.getHeight(), Image.SCALE_DEFAULT));
+   
+        l.setIcon(icon);
+        l.repaint();
+        
+    }
+    
+    //Aquie en adelante son botones para probar como se ven las colas, como se actualizan y esas cosas
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        zPanelP1.remove(this.zPanelP1.getComponent(0));
-        zPanelP1.updateUI();
+        zSemaforo= new Semaphore(1);
+        stSemaforo= new Semaphore(1);
+        try {
+            this.zFigther= SO.escogerPersonajes(zColaP1, zColaP2, zColaP3, zSemaforo, zPanelP1, zPanel2, zPanel3);
+            this.stFigther= SO.escogerPersonajes(stColaP1, stColaP2, stColaP3, stSemaforo, stPanel1, stPanel2, stPanel3);
+            this.pelea(zFigther, zFighterLabel);
+            this.pelea(stFigther, stFigtherLabel);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+//        zPanelP1.remove(this.zPanelP1.getComponent(0));
+//        zPanelP1.updateUI();
+//        stPanel1.remove(this.stPanel1.getComponent(0));
+//        stPanel1.updateUI();
+//        zPanel2.remove(this.zPanel2.getComponent(0));
+//        zPanel2.updateUI();
+//        stPanel2.remove(this.stPanel2.getComponent(0));
+//        stPanel2.updateUI();
+//        zPanel3.remove(this.zPanel3.getComponent(0));
+//        zPanel3.updateUI();
+//        stPanel3.remove(this.stPanel3.getComponent(0));
+//        stPanel3.updateUI();
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.llenarColas();
         System.out.println(zColaP1.imprimirCola());
-//        zPanelP1.removeAll();
-//        zPanelP1.updateUI();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        try {
+            zSemaforo= new Semaphore(1);
+            stSemaforo= new Semaphore(1);
+            SO.revisarColas(zColaP1, zColaP2, zColaP3, zColaP3, zSemaforo, zPanelP1, zPanel2, zPanel3);
+            SO.revisarColas(zColaP1, zColaP2, zColaP3, zColaP2, zSemaforo, zPanelP1, zPanel2, zPanel3);
+            SO.revisarColas(stColaP1, stColaP2, stColaP3, stColaP2, stSemaforo, stPanel1, stPanel2, stPanel3);
+            SO.revisarColas(stColaP1, stColaP2, stColaP3, stColaP3, stSemaforo, stPanel1, stPanel2, stPanel3);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
         /**
      * @return the poolZelda
      */
@@ -501,6 +601,8 @@ public class Pantalla extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -514,14 +616,16 @@ public class Pantalla extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JPanel stPanel1;
-    private javax.swing.JPanel stPanel2;
-    private javax.swing.JPanel stPanel3;
-    private javax.swing.JPanel stPanel4;
+    public static javax.swing.JLabel stFigtherLabel;
+    public static javax.swing.JPanel stPanel1;
+    public static javax.swing.JPanel stPanel2;
+    public static javax.swing.JPanel stPanel3;
+    public static javax.swing.JPanel stPanel4;
     private javax.swing.JSlider velocidad;
-    private javax.swing.JPanel zPanel2;
-    private javax.swing.JPanel zPanel3;
-    private javax.swing.JPanel zPanel4;
-    private javax.swing.JPanel zPanelP1;
+    public static javax.swing.JLabel zFighterLabel;
+    public static javax.swing.JPanel zPanel2;
+    public static javax.swing.JPanel zPanel3;
+    public static javax.swing.JPanel zPanel4;
+    public static javax.swing.JPanel zPanelP1;
     // End of variables declaration//GEN-END:variables
 }

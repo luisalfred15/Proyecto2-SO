@@ -5,8 +5,20 @@ package Administrador;
 import Clases.Cola;
 import Clases.Personaje;
 import Interfaz.Pantalla;
+import static Interfaz.Pantalla.stPanel1;
+import static Interfaz.Pantalla.stPanel2;
+import static Interfaz.Pantalla.stPanel3;
+import static Interfaz.Pantalla.stSemaforo;
+import static Interfaz.Pantalla.zPanel2;
+import static Interfaz.Pantalla.zPanel3;
+import static Interfaz.Pantalla.zPanelP1;
+import static Interfaz.Pantalla.zSemaforo;
 import java.io.IOException;
 import java.util.concurrent.Semaphore;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
@@ -17,7 +29,7 @@ public class SistemaOperativo extends Thread {
     private Personaje fighterZ;
     private Personaje figtherST;
 
-    int cicloCont;
+    int cicloCont;  //Variable para contar los ciclos de revision 
     Semaphore zSemaforo;
     Semaphore stSemaforo;
     boolean turno;
@@ -27,22 +39,55 @@ public class SistemaOperativo extends Thread {
         this.turno=false;
     }
     
-    public void actualizarColas(){
-        //Aqui vamos a generar en tiempo real las colas en la interfaz
+    @Override
+    public void run(){
+        while (true){
+            if(this.turno==true){
+                try {
+                    this.cicloCont+=1;
+                    this.revisarColas(Pantalla.getzColaP1(),Pantalla.getzColaP2(),Pantalla.getzColaP3(),Pantalla.getzColaP3(),Pantalla.zSemaforo,Pantalla.zPanelP1,Pantalla.zPanel2,Pantalla.zPanel3);
+                    this.revisarColas(Pantalla.getzColaP1(),Pantalla.getzColaP2(),Pantalla.getzColaP3(),Pantalla.getzColaP2(),Pantalla.zSemaforo,Pantalla.zPanelP1,Pantalla.zPanel2,Pantalla.zPanel3);
+                    this.revisarColas(Pantalla.getStColaP1(),Pantalla.getStColaP2(),Pantalla.getStColaP3(),Pantalla.getStColaP3(),Pantalla.stSemaforo,Pantalla.stPanel1,Pantalla.stPanel2,Pantalla.stPanel3);
+                    this.revisarColas(Pantalla.getStColaP1(),Pantalla.getStColaP2(),Pantalla.getStColaP3(),Pantalla.getStColaP2(),Pantalla.stSemaforo,Pantalla.stPanel1,Pantalla.stPanel2,Pantalla.stPanel3);
+                    this.fighterZ=this.escogerPersonajes(Pantalla.getzColaP1(),Pantalla.getzColaP2(),Pantalla.getzColaP3(),Pantalla.zSemaforo,Pantalla.zPanelP1,Pantalla.zPanel2,Pantalla.zPanel3);
+                    this.figtherST=this.escogerPersonajes(Pantalla.getStColaP1(),Pantalla.getStColaP2(),Pantalla.getStColaP3(),Pantalla.stSemaforo,Pantalla.stPanel1,Pantalla.stPanel2,Pantalla.stPanel3);
+                    Pantalla.pelea(fighterZ, Pantalla.zFighterLabel);
+                    Pantalla.pelea(figtherST, Pantalla.stFigtherLabel);
+                    Pantalla.zFigther=fighterZ;
+                    Pantalla.stFigther=figtherST;
+                    this.turno=false;
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(SistemaOperativo.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+        }
     }
-    //Recibe la cola desde donde va a recibir el personaje 
-    public void revisarColas(Cola p1, Cola p2, Cola p3, Cola revisada, Semaphore semaforo) throws InterruptedException{
+    
+    public void actualizarColas(){
+        //metodo de prueba para aumentar la prioridad de los personajes 
+        Pantalla.getzColaP2().actualizarPersonajesCont();
+        Pantalla.getzColaP3().actualizarPersonajesCont();
+        Pantalla.getStColaP2().actualizarPersonajesCont();
+        Pantalla.getStColaP3().actualizarPersonajesCont();
+    }
+    //Revisa las colas y las mete en otra lista si su prioridad cambio 
+    public void revisarColas(Cola p1, Cola p2, Cola p3, Cola revisada, Semaphore semaforo, JPanel zP1, JPanel zP2, JPanel zP3) throws InterruptedException{
         try{
             
         while(true){
             Personaje aux=revisada.getNodoCabeza().getDatos();
-           
                 if( revisada.getTipo()==3){
                     if(aux.getTipo()==2){
                         semaforo.acquire(1);
                         revisada.desencolar();
                         p2.encolar(aux);
                         semaforo.release();
+                        
+                        zP2.add(zP3.getComponent(0));
+//                        zP3.remove(zP3.getComponent(0));
+                        zP3.updateUI();
+                        zP2.updateUI();
                     }else{
                         break;
                     }
@@ -52,6 +97,10 @@ public class SistemaOperativo extends Thread {
                         revisada.desencolar();
                         p1.encolar(aux);
                         semaforo.release();
+                        zP1.add(zP2.getComponent(0));
+//                        zP2.remove(zP2.getComponent(0));
+                        zP1.updateUI();
+                        zP2.updateUI();
                     }else{
                         break;
                     }
@@ -61,26 +110,32 @@ public class SistemaOperativo extends Thread {
             System.out.println("error");
         }
     }
-    //Saca un personaje de su cola de prioridad, si no hay elementos en una cola pasa a la siguiente. Si no hay elementos en ninguna cola pasa al protocolo de emergencia
-    public Personaje escogerPersonajes(Cola P1, Cola P2, Cola P3, Semaphore Semaforo) throws InterruptedException{
-        try{
-            
-        Personaje aux= P1.getNodoCabeza().getDatos();
+    
+    //Saca un personaje de su cola de prioridad, si no hay elementos en una cola pasa a la siguiente. Si no hay elementos en ninguna cola pasa al protocolo de emergencia(no ha sido definido)
+    public Personaje escogerPersonajes(Cola P1, Cola P2, Cola P3, Semaphore Semaforo, JPanel zP1, JPanel zP2, JPanel zP3) throws InterruptedException{
+        try{         
+        Personaje aux= null;
         if(!P1.esVacia()){
             aux=P1.getNodoCabeza().getDatos();
             Semaforo.acquire(1);
             P1.desencolar();
             Semaforo.release();
+            zP1.remove(zP1.getComponent(0));
+            zP1.updateUI();
         }else if(!P2.esVacia()){
             aux=P2.getNodoCabeza().getDatos();
             Semaforo.acquire(1);
             P2.desencolar();
             Semaforo.release();
+            zP2.remove(zP2.getComponent(0));
+            zP2.updateUI();
         }else if(!P3.esVacia()){
             aux=P3.getNodoCabeza().getDatos();
             Semaforo.acquire(1);
             P3.desencolar();
             Semaforo.release();
+            zP3.remove(zP3.getComponent(0));
+            zP3.updateUI();
         }else{
             System.out.println("No hay personajes disponibles, insertar 10 mas");
         }
@@ -89,38 +144,14 @@ public class SistemaOperativo extends Thread {
             return null;
     }
    }  
+    
+
     //Agregar personajes cada dos ciclos de revision
     public void agregarPersonaje(){
         
     }
-       //metodo a ser ejecuto cuando inicie la simulacion          
+       //metodo a ser ejecuto cuando inicie la simulacion. Metodo que iba a ser y termino no siendo  jeje      
      public void llenarColas() {
-//         Personaje[] arrayZ= Pantalla.getPoolZelda();
-//         Personaje[] arraySt=Pantalla.getPoolStreet();
-//         Cola zP1= Pantalla.getzColaP1();
-//         Cola zP2= Pantalla.getzColaP2();
-//         Cola zP3= Pantalla.getzColaP3();
-//         Cola stP1= Pantalla.getStColaP1();
-//         Cola stP2= Pantalla.getStColaP2();
-//         Cola stP3= Pantalla.getStColaP3();
-//         for (Personaje x: arrayZ) {
-//             if(x.getTipo()==1){
-//                zP1.encolar(x);
-//             }else if(x.getTipo()==2){
-//                 zP2.encolar(x);
-//             }else if(x.getTipo()==3){
-//                 zP3.encolar(x);
-//             }
-//         }
-//         for (Personaje x: arraySt) {
-//             if(x.getTipo()==1){
-//                stP1.encolar(x);
-//             }else if(x.getTipo()==2){
-//                 stP2.encolar(x);
-//             }else if(x.getTipo()==3){
-//                 stP3.encolar(x);
-//             }
-//         }
             
      }           
             
