@@ -131,6 +131,8 @@ public class Pantalla extends javax.swing.JFrame {
         stColaP2=new Cola(2);
         stColaP3= new Cola(3);
         stRefuerzo=new Cola(4);
+                zSemaforo= new Semaphore(1);
+        stSemaforo= new Semaphore(1);
     }
 
     /**
@@ -367,8 +369,7 @@ public class Pantalla extends javax.swing.JFrame {
     
     //Aquie en adelante son botones para probar como se ven las colas, como se actualizan y esas cosas
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        zSemaforo= new Semaphore(1);
-        stSemaforo= new Semaphore(1);
+
         try {
             this.zFigther= SO.escogerPersonajes(zColaP1, zColaP2, zColaP3, zSemaforo, zPanelP1, zPanel2, zPanel3);
             this.stFigther= SO.escogerPersonajes(stColaP1, stColaP2, stColaP3, stSemaforo, stPanel1, stPanel2, stPanel3);
@@ -403,14 +404,12 @@ public class Pantalla extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        
+        SO.actualizarColas();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         try {
-            zSemaforo= new Semaphore(1);
-            stSemaforo= new Semaphore(1);
             SO.revisarColas(zColaP1, zColaP2, zColaP3, zColaP3, zSemaforo, zPanelP1, zPanel2, zPanel3);
             SO.revisarColas(zColaP1, zColaP2, zColaP3, zColaP2, zSemaforo, zPanelP1, zPanel2, zPanel3);
             SO.revisarColas(stColaP1, stColaP2, stColaP3, stColaP2, stSemaforo, stPanel1, stPanel2, stPanel3);
