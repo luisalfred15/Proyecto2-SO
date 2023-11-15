@@ -9,6 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,6 +23,8 @@ public class Personaje {
     private String nombre;
     private BufferedImage imagen;
     private BufferedImage icono;
+    private String rutaIcon;
+    private String rutaImagen;
     private int tipo; // tipo puede ser excepcional (1), promedio (2) o deficiente (3)
     private Propiedades propiedades;
     private int contador;
@@ -27,19 +32,23 @@ public class Personaje {
     public Personaje(String id, String nombre, Propiedades propiedades) throws IOException {
         this.id = id;
         this.nombre = nombre;
+
         String rutaImagen = "src\\Imagenes\\" + nombre + ".png";
         this.imagen = ImageIO.read(new File(rutaImagen));
         String rutaIcono = "src\\Imagenes\\" + nombre + "2.png";
+        this.rutaIcon=rutaIcono;
+        this.rutaImagen=rutaImagen;
         this.imagen = ImageIO.read(new File(rutaIcono));
+
         this.propiedades = propiedades;
         this.contador = 0;
     }
-    
+
     public void aumentarPrioridad() {
         if (this.getContador() == 8) {
             if (this.getTipo() != 1) { // tipo es lo mismo que prioridad
                 this.setContador(0);
-                this.setTipo(this.getTipo() + 1);
+                this.setTipo(this.getTipo() - 1);
             }
         }
     }
@@ -225,6 +234,34 @@ public class Personaje {
      */
     public void setIcono(BufferedImage icono) {
         this.icono = icono;
+    }
+
+    /**
+     * @return the rutaIcon
+     */
+    public String getRutaIcon() {
+        return rutaIcon;
+    }
+
+    /**
+     * @param rutaIcon the rutaIcon to set
+     */
+    public void setRutaIcon(String rutaIcon) {
+        this.rutaIcon = rutaIcon;
+    }
+
+    /**
+     * @return the rutaImagen
+     */
+    public String getRutaImagen() {
+        return rutaImagen;
+    }
+
+    /**
+     * @param rutaImagen the rutaImagen to set
+     */
+    public void setRutaImagen(String rutaImagen) {
+        this.rutaImagen = rutaImagen;
     }
 
     

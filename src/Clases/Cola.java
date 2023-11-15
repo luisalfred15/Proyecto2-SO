@@ -13,43 +13,63 @@ public class Cola {
     private Nodo nodoCabeza;
     private Nodo nodoCola;
     private int longitud;
+    private int tipo; //prioridad
     
-    public Cola() {
+    public Cola(int tipo) {
         this.nodoCabeza = null;
         this.nodoCola = null;
         this.longitud = 0;
+        this.tipo=tipo;
     }
     
     public boolean esVacia() {
-        return this.getNodoCola() == null;
+        return this.getNodoCola()  == null;
     }
     
     public void vaciar() {
         this.setNodoCabeza(null);
-        this.setNodoCabeza(null);
+        this.setNodoCola(null);
         this.setLongitud(0);
     }
     
-    public void encolar(Object dato) {
+    public void encolar(Personaje dato) {
         Nodo nodoNuevo = new Nodo(dato);
         if (this.esVacia()) {
             this.nodoCabeza = nodoNuevo;
-            this.nodoCola = nodoNuevo;
+            
         } else {
             this.nodoCola.setNodoSiguiente(nodoNuevo);
-            this.nodoCola = nodoNuevo;
         }
+        this.nodoCola = nodoNuevo;
+        this.longitud++;
     }
     
     public void desencolar() {
         if (this.esVacia()) {
             System.out.println("La cola esta vacia.");
         } else if (this.longitud == 1) {
-            this.esVacia();
-        } else {
+            this.vaciar();
+//            this.longitud--;
+        }else {
             this.nodoCabeza = this.nodoCabeza.getNodoSiguiente();
             this.longitud--;
         }
+        
+    }
+    public Nodo desencolarValor() {
+        Nodo aux= this.nodoCabeza;
+        if (this.esVacia()) {
+            System.out.println("La cola esta vacia.");
+        } else if (this.longitud == 1) {
+            this.vaciar();
+            aux=null;
+            this.longitud--;
+        } else {
+            aux=this.nodoCabeza;
+            this.nodoCabeza = this.nodoCabeza.getNodoSiguiente();
+            this.longitud--;
+        }
+        return aux;
     }
     
     public String imprimirCola() {
@@ -58,12 +78,28 @@ public class Cola {
             for (int i = 0; i < this.longitud; i++) {
                 Nodo nodoActual = this.nodoCabeza;
                 desencolar();
-                impresion += nodoActual.getDatos() + ", ";
+                impresion += nodoActual.getDatos().getNombre() + ", ";
                 encolar(nodoActual.getDatos());
             }
             return impresion;
         }
-        return null;
+        return "Vacia";
+    }
+    public void actualizarPersonajesCont(){
+        if (!this.esVacia()) {
+            String impresion = "";
+            for (int i = 0; i < this.longitud; i++) {
+                Nodo nodoActual = this.nodoCabeza;
+                nodoActual.getDatos().aumentarPrioridad();
+                nodoActual.getDatos().setContador(nodoActual.getDatos().getContador()+1);
+                nodoActual.getDatos().aumentarPrioridad();
+                desencolar();
+                impresion += nodoActual.getDatos().getNombre() + ", ";
+                encolar(nodoActual.getDatos());
+                System.out.println("hola");
+            }
+            
+        }
     }
     
     public String imprimirRecur(String impresion) {
@@ -116,6 +152,20 @@ public class Cola {
      */
     public void setLongitud(int longitud) {
         this.longitud = longitud;
+    }
+
+    /**
+     * @return the tipo
+     */
+    public int getTipo() {
+        return tipo;
+    }
+
+    /**
+     * @param tipo the tipo to set
+     */
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
     }
     
 }
