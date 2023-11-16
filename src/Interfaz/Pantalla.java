@@ -16,6 +16,7 @@ import java.awt.Panel;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,8 +34,6 @@ import static javax.swing.SwingConstants.TOP;
  */
 public class Pantalla extends javax.swing.JFrame {
 
-
-
     private static Personaje[] poolZelda = new Personaje[10];
     private static Personaje[] poolStreet = new Personaje[10];
 
@@ -50,23 +49,28 @@ public class Pantalla extends javax.swing.JFrame {
     private static Cola stColaP2;
     private static Cola stColaP3;
     private static Cola stRefuerzo;
-    
+
+    private int cicloCont;
+
     public static volatile Semaphore zSemaforo;
     public static volatile Semaphore stSemaforo;
-    
+
     public static Personaje zFigther;
     public static Personaje stFigther;
-    
-    public SistemaOperativo SO= new SistemaOperativo();
+
+    public SistemaOperativo SO = new SistemaOperativo();
+
     /**
      * Creates new form Pantalla
      */
     public Pantalla() throws IOException {
-      
+
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         this.setResizable(false);
         initComponents();
+
+        this.setCicloCont(0);
 
         Propiedades p1 = new Propiedades(4, 8, 7, 2);
         Propiedades p2 = new Propiedades(6, 7, 6, 4);
@@ -110,6 +114,7 @@ public class Pantalla extends javax.swing.JFrame {
         poolStreet[7] = new Personaje("s8", "Manon", p18);
         poolStreet[8] = new Personaje("s9", "Ryu", p19);
         poolStreet[9] = new Personaje("s10", "Zangief", p20);
+
         for (int i = 0; i < 10; i++) {
             poolZelda[i].determinarTipo();
             poolStreet[i].determinarTipo();
@@ -122,17 +127,17 @@ public class Pantalla extends javax.swing.JFrame {
         for (int i = 0; i < 10; i++) {
             poolStreet[i].imprimirInfo();
         }
-        
-        zColaP1= new Cola(1);
-        zColaP2=new Cola(2);
-        zColaP3=new Cola(3);
-        zRefuerzo=new Cola(4);
-        stColaP1=new Cola(1);
-        stColaP2=new Cola(2);
-        stColaP3= new Cola(3);
-        stRefuerzo=new Cola(4);
-                zSemaforo= new Semaphore(1);
-        stSemaforo= new Semaphore(1);
+
+        zColaP1 = new Cola(1);
+        zColaP2 = new Cola(2);
+        zColaP3 = new Cola(3);
+        zRefuerzo = new Cola(4);
+        stColaP1 = new Cola(1);
+        stColaP2 = new Cola(2);
+        stColaP3 = new Cola(3);
+        stRefuerzo = new Cola(4);
+        zSemaforo = new Semaphore(1);
+        stSemaforo = new Semaphore(1);
     }
 
     /**
@@ -162,11 +167,11 @@ public class Pantalla extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         zPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        zPanelP1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        zPanel1 = new javax.swing.JPanel();
+        meter = new javax.swing.JButton();
+        borrar = new javax.swing.JButton();
+        revisar = new javax.swing.JButton();
+        aumentar = new javax.swing.JButton();
         velocidad = new javax.swing.JSlider();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -230,44 +235,44 @@ public class Pantalla extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, 290, 110));
 
-        zPanelP1.setBackground(new java.awt.Color(0, 0, 0));
-        zPanelP1.setForeground(new java.awt.Color(0, 0, 0));
-        zPanelP1.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
-        jScrollPane1.setViewportView(zPanelP1);
+        zPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        zPanel1.setForeground(new java.awt.Color(0, 0, 0));
+        zPanel1.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
+        jScrollPane1.setViewportView(zPanel1);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 290, 100));
 
-        jButton1.setText("meter en batalla");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        meter.setText("meter en batalla");
+        meter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                meterActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 20, 120, -1));
+        jPanel1.add(meter, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 20, 120, -1));
 
-        jButton2.setText("borrar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        borrar.setText("borrar");
+        borrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                borrarActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 20, -1, -1));
+        jPanel1.add(borrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 20, -1, -1));
 
-        jButton3.setText("revisar colas");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        revisar.setText("revisar colas");
+        revisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                revisarActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 60, -1, -1));
+        jPanel1.add(revisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 60, -1, -1));
 
-        jButton4.setText("aumentar priodidad");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        aumentar.setText("aumentar priodidad");
+        aumentar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                aumentarActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 70, -1, -1));
+        jPanel1.add(aumentar, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 70, -1, -1));
 
         velocidad.setMajorTickSpacing(50);
         velocidad.setMinorTickSpacing(10);
@@ -307,38 +312,38 @@ public class Pantalla extends javax.swing.JFrame {
         velocidadPelea = velocidad.getValue();
     }//GEN-LAST:event_velocidadStateChanged
     //LLena las colas al inicio de la simulacion
-    public void llenarColas(){
-        
-         for (Personaje x: poolZelda) {
-             if(x.getTipo()==1){
+    public void llenarColas() {
+
+        for (Personaje x : poolZelda) {
+            if (x.getTipo() == 1) {
                 zColaP1.encolar(x);
-                this.labelCreation(x, zPanelP1);
-             }else if(x.getTipo()==2){
-                 zColaP2.encolar(x);
-                 this.labelCreation(x, zPanel2);
-             }else if(x.getTipo()==3){
-                 zColaP3.encolar(x);
-                 this.labelCreation(x, zPanel3);
-             }
-         }
-         for (Personaje x: poolStreet) {
-             if(x.getTipo()==1){
+                this.labelCreation(x, zPanel1);
+            } else if (x.getTipo() == 2) {
+                zColaP2.encolar(x);
+                this.labelCreation(x, zPanel2);
+            } else if (x.getTipo() == 3) {
+                zColaP3.encolar(x);
+                this.labelCreation(x, zPanel3);
+            }
+        }
+        for (Personaje x : poolStreet) {
+            if (x.getTipo() == 1) {
                 stColaP1.encolar(x);
                 this.labelCreation(x, stPanel1);
-             }else if(x.getTipo()==2){
-                 stColaP2.encolar(x);
-                 this.labelCreation(x, stPanel2);
-             }else if(x.getTipo()==3){
-                 stColaP3.encolar(x);
-                 this.labelCreation(x, stPanel3);
-             }
-         }
+            } else if (x.getTipo() == 2) {
+                stColaP2.encolar(x);
+                this.labelCreation(x, stPanel2);
+            } else if (x.getTipo() == 3) {
+                stColaP3.encolar(x);
+                this.labelCreation(x, stPanel3);
+            }
+        }
     }
-    
+
     //Crea las labels que van a irse agregando a las colas que se muestran en interfaz
-    public void  labelCreation(Personaje personaje, JPanel p){
-        String texto= personaje.getId() ;
-        JLabel etiqueta= new JLabel(texto);
+    public static void labelCreation(Personaje personaje, JPanel p) {
+        String texto = personaje.getId();
+        JLabel etiqueta = new JLabel(texto);
         etiqueta.setSize(60, 60);
         etiqueta.setForeground(Color.white);
         etiqueta.setVerticalTextPosition(1);
@@ -346,41 +351,49 @@ public class Pantalla extends javax.swing.JFrame {
         etiqueta.setHorizontalTextPosition(CENTER);
         etiqueta.setIconTextGap(3);
         etiqueta.setVerticalTextPosition(TOP);
-        ImageIcon fot= new ImageIcon(personaje.getRutaIcon());
-        ImageIcon icon=new ImageIcon(fot.getImage().getScaledInstance(etiqueta.getWidth(), etiqueta.getHeight(), Image.SCALE_DEFAULT));
-   
+        ImageIcon fot = new ImageIcon(personaje.getRutaIcon());
+        ImageIcon icon = new ImageIcon(fot.getImage().getScaledInstance(etiqueta.getWidth(), etiqueta.getHeight(), Image.SCALE_DEFAULT));
+
         etiqueta.setIcon(icon);
         etiqueta.repaint();
-        
+
         p.add(etiqueta);
         p.updateUI();
     }
-    
+
     //Monta los personajes en Las variables peleador 
-    public static void pelea(Personaje p, JLabel l){
-        
-        ImageIcon fot= new ImageIcon(p.getRutaImagen());
-        ImageIcon icon=new ImageIcon(fot.getImage().getScaledInstance(l.getWidth(), l.getHeight(), Image.SCALE_DEFAULT));
-   
+    public static void pelea(Personaje p, JLabel l) {
+
+        ImageIcon fot = new ImageIcon(p.getRutaImagen());
+        ImageIcon icon = new ImageIcon(fot.getImage().getScaledInstance(l.getWidth(), l.getHeight(), Image.SCALE_DEFAULT));
+
         l.setIcon(icon);
         l.repaint();
-        
+
     }
-    
+
     //Aquie en adelante son botones para probar como se ven las colas, como se actualizan y esas cosas
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void meterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_meterActionPerformed
 
         try {
-            this.zFigther= SO.escogerPersonajes(zColaP1, zColaP2, zColaP3, zSemaforo, zPanelP1, zPanel2, zPanel3);
-            this.stFigther= SO.escogerPersonajes(stColaP1, stColaP2, stColaP3, stSemaforo, stPanel1, stPanel2, stPanel3);
+            this.zFigther = SO.escogerPersonajes(zColaP1, zColaP2, zColaP3, zSemaforo, zPanel1, zPanel2, zPanel3);
+            this.stFigther = SO.escogerPersonajes(stColaP1, stColaP2, stColaP3, stSemaforo, stPanel1, stPanel2, stPanel3);
             this.pelea(zFigther, zFighterLabel);
             this.pelea(stFigther, stFigtherLabel);
+            this.setCicloCont(this.getCicloCont() + 1);
+            if (this.getCicloCont() == 2) {
+                Random r = new Random();
+                int decision = r.nextInt(101);
+                if (decision <= 80) {
+                    SO.agregarPersonaje(poolZelda, zColaP1, zColaP2, zColaP3, zPanel1, zPanel2, zPanel3);
+                    SO.agregarPersonaje(poolStreet, stColaP1, stColaP2, stColaP3, stPanel1, stPanel2, stPanel3);
+                }
+                this.setCicloCont(0);
+            }
         } catch (InterruptedException ex) {
             Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
+
 //        zPanelP1.remove(this.zPanelP1.getComponent(0));
 //        zPanelP1.updateUI();
 //        stPanel1.remove(this.stPanel1.getComponent(0));
@@ -393,37 +406,37 @@ public class Pantalla extends javax.swing.JFrame {
 //        zPanel3.updateUI();
 //        stPanel3.remove(this.stPanel3.getComponent(0));
 //        stPanel3.updateUI();
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_meterActionPerformed
+
+    private void borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarActionPerformed
         // TODO add your handling code here:
         this.llenarColas();
         System.out.println(zColaP1.imprimirCola());
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_borrarActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void aumentarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aumentarActionPerformed
         // TODO add your handling code here:
         SO.actualizarColas();
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_aumentarActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void revisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revisarActionPerformed
         // TODO add your handling code here:
         try {
-            SO.revisarColas(zColaP1, zColaP2, zColaP3, zColaP3, zSemaforo, zPanelP1, zPanel2, zPanel3);
-            SO.revisarColas(zColaP1, zColaP2, zColaP3, zColaP2, zSemaforo, zPanelP1, zPanel2, zPanel3);
+            SO.revisarColas(zColaP1, zColaP2, zColaP3, zColaP3, zSemaforo, zPanel1, zPanel2, zPanel3);
+            SO.revisarColas(zColaP1, zColaP2, zColaP3, zColaP2, zSemaforo, zPanel1, zPanel2, zPanel3);
             SO.revisarColas(stColaP1, stColaP2, stColaP3, stColaP2, stSemaforo, stPanel1, stPanel2, stPanel3);
             SO.revisarColas(stColaP1, stColaP2, stColaP3, stColaP3, stSemaforo, stPanel1, stPanel2, stPanel3);
         } catch (InterruptedException ex) {
             Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
-        /**
+    }//GEN-LAST:event_revisarActionPerformed
+    /**
      * @return the poolZelda
      */
     public static Personaje[] getPoolZelda() {
         return poolZelda;
-        
+
     }
 
     /**
@@ -558,6 +571,7 @@ public class Pantalla extends javax.swing.JFrame {
     public static void setStRefuerzo(Cola aStRefuerzo) {
         stRefuerzo = aStRefuerzo;
     }
+
     /**
      * @param args the command line arguments
      */
@@ -598,10 +612,8 @@ public class Pantalla extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton aumentar;
+    private javax.swing.JButton borrar;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -615,6 +627,8 @@ public class Pantalla extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JButton meter;
+    private javax.swing.JButton revisar;
     public static javax.swing.JLabel stFigtherLabel;
     public static javax.swing.JPanel stPanel1;
     public static javax.swing.JPanel stPanel2;
@@ -622,9 +636,23 @@ public class Pantalla extends javax.swing.JFrame {
     public static javax.swing.JPanel stPanel4;
     private javax.swing.JSlider velocidad;
     public static javax.swing.JLabel zFighterLabel;
+    public static javax.swing.JPanel zPanel1;
     public static javax.swing.JPanel zPanel2;
     public static javax.swing.JPanel zPanel3;
     public static javax.swing.JPanel zPanel4;
-    public static javax.swing.JPanel zPanelP1;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the cicloCont
+     */
+    public int getCicloCont() {
+        return cicloCont;
+    }
+
+    /**
+     * @param cicloCont the cicloCont to set
+     */
+    public void setCicloCont(int cicloCont) {
+        this.cicloCont = cicloCont;
+    }
 }
