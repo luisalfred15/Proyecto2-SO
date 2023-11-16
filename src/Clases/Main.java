@@ -51,7 +51,6 @@ public class Main {
 ////        zelda.imprimirInfo();
 ////        ganon.imprimirInfo();
 //        Semaphore semaforo= new Semaphore(1);
-        SistemaOperativo OS = new SistemaOperativo();
 //        Cola p1= new Cola(1);
 //        Cola p2 = new Cola(2);
 //        Cola p3 = new Cola(3);
@@ -74,7 +73,6 @@ public class Main {
 //        System.out.println(p3.imprimirCola());
 
         Pantalla pantalla = new Pantalla();
-        OS.llenarColas();
        
     }  
     

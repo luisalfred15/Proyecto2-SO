@@ -16,6 +16,7 @@ import java.awt.Panel;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import static java.lang.Thread.sleep;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
@@ -40,6 +41,7 @@ public class Pantalla extends javax.swing.JFrame {
     public static void labelCreation() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
     int velocidadPelea;
     private static Cola zColaP1;
     private static Cola zColaP2;
@@ -63,7 +65,7 @@ public class Pantalla extends javax.swing.JFrame {
     /**
      * Creates new form Pantalla
      */
-    public Pantalla() throws IOException {
+    public Pantalla() throws IOException, InterruptedException {
 
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -138,6 +140,29 @@ public class Pantalla extends javax.swing.JFrame {
         stRefuerzo = new Cola(4);
         zSemaforo = new Semaphore(1);
         stSemaforo = new Semaphore(1);
+
+        velocidadPelea = velocidad.getValue();
+        
+        this.llenarColas();
+
+        while (true) {
+            this.setCicloCont(this.getCicloCont() + 1);
+            this.meterEnBatalla();
+            
+            System.out.println(velocidad.getValue());
+            
+            if (this.getCicloCont() == 2) {
+                Random r = new Random();
+                int decision = r.nextInt(101);
+                if (decision <= 80) {
+                    SO.agregarPersonaje(poolZelda, zColaP1, zColaP2, zColaP3, zPanel1, zPanel2, zPanel3);
+                    SO.agregarPersonaje(poolStreet, stColaP1, stColaP2, stColaP3, stPanel1, stPanel2, stPanel3);
+                }
+                this.setCicloCont(0);
+            }
+            do {} while (this.velocidadPelea == 0);
+            sleep(100000 / this.velocidadPelea);
+        }
     }
 
     /**
@@ -175,8 +200,8 @@ public class Pantalla extends javax.swing.JFrame {
         velocidad = new javax.swing.JSlider();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -288,20 +313,20 @@ public class Pantalla extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("1");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 770, 20, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 770, 20, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("0");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 770, 40, -1));
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel6.setText("2");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 770, 20, -1));
+
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesInterfaz/pantalla_fondo.png"))); // NOI18N
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 860));
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel5.setText("0,5");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 770, 40, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 860));
 
@@ -310,35 +335,8 @@ public class Pantalla extends javax.swing.JFrame {
 
     private void velocidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_velocidadStateChanged
         velocidadPelea = velocidad.getValue();
+        System.out.println(velocidadPelea);
     }//GEN-LAST:event_velocidadStateChanged
-    //LLena las colas al inicio de la simulacion
-    public void llenarColas() {
-
-        for (Personaje x : poolZelda) {
-            if (x.getTipo() == 1) {
-                zColaP1.encolar(x);
-                this.labelCreation(x, zPanel1);
-            } else if (x.getTipo() == 2) {
-                zColaP2.encolar(x);
-                this.labelCreation(x, zPanel2);
-            } else if (x.getTipo() == 3) {
-                zColaP3.encolar(x);
-                this.labelCreation(x, zPanel3);
-            }
-        }
-        for (Personaje x : poolStreet) {
-            if (x.getTipo() == 1) {
-                stColaP1.encolar(x);
-                this.labelCreation(x, stPanel1);
-            } else if (x.getTipo() == 2) {
-                stColaP2.encolar(x);
-                this.labelCreation(x, stPanel2);
-            } else if (x.getTipo() == 3) {
-                stColaP3.encolar(x);
-                this.labelCreation(x, stPanel3);
-            }
-        }
-    }
 
     //Crea las labels que van a irse agregando a las colas que se muestran en interfaz
     public static void labelCreation(Personaje personaje, JPanel p) {
@@ -361,6 +359,12 @@ public class Pantalla extends javax.swing.JFrame {
         p.updateUI();
     }
 
+    //LLena las colas al inicio de la simulacion
+    public void llenarColas() {
+        SO.llenarColas(poolZelda, zColaP1, zColaP2, zColaP3, zPanel1, zPanel2, zPanel3);
+        SO.llenarColas(poolStreet, stColaP1, stColaP2, stColaP3, stPanel1, stPanel2, stPanel3);
+    }
+
     //Monta los personajes en Las variables peleador 
     public static void pelea(Personaje p, JLabel l) {
 
@@ -372,9 +376,19 @@ public class Pantalla extends javax.swing.JFrame {
 
     }
 
+    public void meterEnBatalla() {
+        try {
+            this.zFigther = SO.escogerPersonajes(zColaP1, zColaP2, zColaP3, zSemaforo, zPanel1, zPanel2, zPanel3);
+            this.stFigther = SO.escogerPersonajes(stColaP1, stColaP2, stColaP3, stSemaforo, stPanel1, stPanel2, stPanel3);
+            this.pelea(zFigther, zFighterLabel);
+            this.pelea(stFigther, stFigtherLabel);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     //Aquie en adelante son botones para probar como se ven las colas, como se actualizan y esas cosas
     private void meterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_meterActionPerformed
-
         try {
             this.zFigther = SO.escogerPersonajes(zColaP1, zColaP2, zColaP3, zSemaforo, zPanel1, zPanel2, zPanel3);
             this.stFigther = SO.escogerPersonajes(stColaP1, stColaP2, stColaP3, stSemaforo, stPanel1, stPanel2, stPanel3);
@@ -393,20 +407,6 @@ public class Pantalla extends javax.swing.JFrame {
         } catch (InterruptedException ex) {
             Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-//        zPanelP1.remove(this.zPanelP1.getComponent(0));
-//        zPanelP1.updateUI();
-//        stPanel1.remove(this.stPanel1.getComponent(0));
-//        stPanel1.updateUI();
-//        zPanel2.remove(this.zPanel2.getComponent(0));
-//        zPanel2.updateUI();
-//        stPanel2.remove(this.stPanel2.getComponent(0));
-//        stPanel2.updateUI();
-//        zPanel3.remove(this.zPanel3.getComponent(0));
-//        zPanel3.updateUI();
-//        stPanel3.remove(this.stPanel3.getComponent(0));
-//        stPanel3.updateUI();
-
     }//GEN-LAST:event_meterActionPerformed
 
     private void borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarActionPerformed
@@ -603,7 +603,11 @@ public class Pantalla extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new Pantalla().setVisible(true);
+                    try {
+                        new Pantalla().setVisible(true);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } catch (IOException ex) {
                     Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -617,7 +621,7 @@ public class Pantalla extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

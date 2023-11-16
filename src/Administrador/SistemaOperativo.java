@@ -165,8 +165,19 @@ public class SistemaOperativo extends Thread {
     }
     //metodo a ser ejecuto cuando inicie la simulacion. Metodo que iba a ser y termino no siendo  jeje      
 
-    public void llenarColas() {
-
+    public void llenarColas(Personaje[] pool, Cola P1, Cola P2, Cola P3, JPanel P1UI, JPanel P2UI, JPanel P3UI) {
+        for (Personaje p : pool) {
+            if (p.getTipo() == 1) {
+                P1.encolar(p);
+                Pantalla.labelCreation(p, P1UI);
+            } else if (p.getTipo() == 2) {
+                P2.encolar(p);
+                Pantalla.labelCreation(p, P2UI);
+            } else if (p.getTipo() == 3) {
+                P3.encolar(p);
+                Pantalla.labelCreation(p, P3UI);
+            }
+        }
     }
 
     /**
