@@ -6,6 +6,7 @@ package Clases;
 
 
 import Administrador.SistemaOperativo;
+import InteligenciaArtificial.Procesador;
 import java.io.File;
 
 import Interfaz.Pantalla;
@@ -24,34 +25,34 @@ public class Main {
      */
 
     public static void main(String[] args) throws IOException, InterruptedException {
-//        Propiedades p = new Propiedades(1,1,1,1);
-//        Personaje link = new Personaje("z1", "Link", p);
-//        Personaje zelda = new Personaje("z2", "Zelda", p);
-//        Personaje ganon = new Personaje("z3", "Ganondorf", p);
-//        
-//        System.out.println(link.getTipo());
-//        System.out.println(zelda.getTipo());
-//        System.out.println(ganon.getTipo());
-//        
-//        link.setContador(8);
-//        zelda.setContador(8);
-//        ganon.setContador(8);
-//        
+        Propiedades p = new Propiedades(1,1,1,1);
+        Personaje link = new Personaje("z1", "Link", p);
+        Personaje zelda = new Personaje("z2", "Zelda", p);
+        Personaje ganon = new Personaje("z3", "Ganondorf", p);
+        
+        
+        link.setContador(8);
+        zelda.setContador(8);
+        ganon.setContador(8);
+        
 //        link.setTipo(3);
 //        zelda.setTipo(3);
 //        ganon.setTipo(2);
-//        
+        
 //        link.aumentarPrioridad();
 //        zelda.aumentarPrioridad();
 //        ganon.aumentarPrioridad();
-////        link.determinarTipo();
-////        zelda.determinarTipo();
-////        ganon.determinarTipo();
-////        link.imprimirInfo();
-////        zelda.imprimirInfo();
-////        ganon.imprimirInfo();
+        link.determinarTipo();
+        zelda.determinarTipo();
+        ganon.determinarTipo();
+        link.imprimirInfo();
+        zelda.imprimirInfo();
+        ganon.imprimirInfo();
+        System.out.println(link.getTipo());
+        System.out.println(zelda.getTipo());
+        System.out.println(ganon.getTipo());
 //        Semaphore semaforo= new Semaphore(1);
-        SistemaOperativo OS = new SistemaOperativo();
+//        SistemaOperativo OS = new SistemaOperativo();
 //        Cola p1= new Cola(1);
 //        Cola p2 = new Cola(2);
 //        Cola p3 = new Cola(3);
@@ -73,9 +74,12 @@ public class Main {
 //        System.out.println(p2.imprimirCola());
 //        System.out.println(p3.imprimirCola());
 
-        Pantalla pantalla = new Pantalla();
-        OS.llenarColas();
-       
+//        Pantalla pantalla = new Pantalla();
+//        OS.llenarColas();
+            
+
+        Procesador IA= new Procesador();
+        IA.eleccion();
     }  
     
 }

@@ -131,7 +131,7 @@ public class Pantalla extends javax.swing.JFrame {
         stColaP2=new Cola(2);
         stColaP3= new Cola(3);
         stRefuerzo=new Cola(4);
-                zSemaforo= new Semaphore(1);
+        zSemaforo= new Semaphore(1);
         stSemaforo= new Semaphore(1);
     }
 
@@ -161,12 +161,16 @@ public class Pantalla extends javax.swing.JFrame {
         zPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         zPanel2 = new javax.swing.JPanel();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        ganadores = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         zPanelP1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        contVictoriasSt = new javax.swing.JLabel();
+        contVictoriasZ = new javax.swing.JLabel();
         velocidad = new javax.swing.JSlider();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -185,7 +189,7 @@ public class Pantalla extends javax.swing.JFrame {
         stFigtherLabel.setFocusable(false);
         stFigtherLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         stFigtherLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        jPanel1.add(stFigtherLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 300, 180, 160));
+        jPanel1.add(stFigtherLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 480, 180, 160));
 
         zFighterLabel.setText("zFigther");
         zFighterLabel.setToolTipText("");
@@ -193,7 +197,7 @@ public class Pantalla extends javax.swing.JFrame {
         zFighterLabel.setFocusable(false);
         zFighterLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         zFighterLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        jPanel1.add(zFighterLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 300, 180, 160));
+        jPanel1.add(zFighterLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 480, 180, 160));
 
         stPanel4.setBackground(new java.awt.Color(0, 0, 0));
         jScrollPane8.setViewportView(stPanel4);
@@ -230,6 +234,13 @@ public class Pantalla extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, 290, 110));
 
+        ganadores.setBackground(new java.awt.Color(0, 0, 0));
+        ganadores.setForeground(new java.awt.Color(255, 255, 255));
+        ganadores.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
+        jScrollPane9.setViewportView(ganadores);
+
+        jPanel1.add(jScrollPane9, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 0, 500, 100));
+
         zPanelP1.setBackground(new java.awt.Color(0, 0, 0));
         zPanelP1.setForeground(new java.awt.Color(0, 0, 0));
         zPanelP1.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
@@ -243,7 +254,7 @@ public class Pantalla extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 20, 120, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 710, 120, -1));
 
         jButton2.setText("borrar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -251,7 +262,7 @@ public class Pantalla extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 20, -1, -1));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 710, -1, -1));
 
         jButton3.setText("revisar colas");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -259,7 +270,7 @@ public class Pantalla extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 60, -1, -1));
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 710, -1, -1));
 
         jButton4.setText("aumentar priodidad");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -267,7 +278,16 @@ public class Pantalla extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 70, -1, -1));
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 710, -1, -1));
+
+        contVictoriasSt.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        contVictoriasSt.setForeground(new java.awt.Color(0, 0, 0));
+        contVictoriasSt.setText("Victorias ");
+        jPanel1.add(contVictoriasSt, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 660, 100, 40));
+
+        contVictoriasZ.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        contVictoriasZ.setText("Victorias ");
+        jPanel1.add(contVictoriasZ, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 660, 100, 40));
 
         velocidad.setMajorTickSpacing(50);
         velocidad.setMinorTickSpacing(10);
@@ -336,7 +356,7 @@ public class Pantalla extends javax.swing.JFrame {
     }
     
     //Crea las labels que van a irse agregando a las colas que se muestran en interfaz
-    public void  labelCreation(Personaje personaje, JPanel p){
+    public static void  labelCreation(Personaje personaje, JPanel p){
         String texto= personaje.getId() ;
         JLabel etiqueta= new JLabel(texto);
         etiqueta.setSize(60, 60);
@@ -598,6 +618,9 @@ public class Pantalla extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel contVictoriasSt;
+    private javax.swing.JLabel contVictoriasZ;
+    private javax.swing.JPanel ganadores;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -615,6 +638,7 @@ public class Pantalla extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     public static javax.swing.JLabel stFigtherLabel;
     public static javax.swing.JPanel stPanel1;
     public static javax.swing.JPanel stPanel2;

@@ -66,31 +66,36 @@ public class Personaje {
         int randFuerza = random.nextInt(101);
         int randAgilidad = random.nextInt(101);
         
+        props.setHabilidades(randHabilidades);
+        props.setAgilidad(randAgilidad);
+        props.setFuerza(randFuerza);
+        props.setPuntosVida(randVida);
         
-        if (randHabilidades <= 60) {
+        if (randHabilidades > 40) {
             // Si se selecciona que es de calidad, se deja el valor
             contadorCalidad++;
+            
         } else {
             // Si no, se multiplica por -1 el valor de la variable transitoria
-            props.setHabilidades(props.getHabilidades() * -1);
+            //props.setHabilidades(props.getHabilidades() * -1);
         }
         
-        if (randVida <= 70) {
+        if (randVida > 30) {
             contadorCalidad++;
         } else {
-            props.setPuntosVida(props.getPuntosVida() * -1);
+            //props.setPuntosVida(props.getPuntosVida() * -1);
         }
         
-        if (randFuerza <= 50) {
+        if (randFuerza > 50) {
             contadorCalidad++;
         } else {
-            props.setFuerza(props.getFuerza() * -1);
+            //props.setFuerza(props.getFuerza() * -1);
         }
         
-        if (randAgilidad <= 40) {
+        if (randAgilidad > 60) {
             contadorCalidad++;
         } else {
-            props.setAgilidad(props.getAgilidad() * -1);
+            //props.setAgilidad(props.getAgilidad() * -1);
         }
         
         if (contadorCalidad >= 3) {
@@ -108,28 +113,28 @@ public class Personaje {
         Propiedades p = this.getPropiedades();
         
         System.out.println("Habs: " + p.getHabilidades());
-        if (p.getHabilidades() > 0) {
+        if (p.getHabilidades() > 40) {
             System.out.println("Calidad Habs: Si");
         } else {
             System.out.println("Calidad Habs: No");
         }
         
         System.out.println("HP: " + p.getPuntosVida());
-        if (p.getPuntosVida() > 0) {
+        if (p.getPuntosVida() > 30) {
             System.out.println("Calidad HP: Si");
         } else {
             System.out.println("Calidad HP: No");
         }
         
         System.out.println("Fuerza: " + p.getFuerza());
-        if (p.getFuerza() > 0) {
+        if (p.getFuerza() > 50) {
             System.out.println("Calidad Fuerza: Si");
         } else {
             System.out.println("Calidad Fuerza: No");
         }
         
         System.out.println("Agilidad: " + p.getAgilidad());
-        if (p.getAgilidad() > 0) {
+        if (p.getAgilidad() > 60) {
             System.out.println("Calidad Agilidad: Si");
         } else {
             System.out.println("Calidad Agilidad: No");
