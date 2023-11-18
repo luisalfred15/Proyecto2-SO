@@ -41,7 +41,7 @@ public class Pantalla extends javax.swing.JFrame {
     public static void labelCreation() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     int velocidadPelea;
     private static Cola zColaP1;
     private static Cola zColaP2;
@@ -53,9 +53,6 @@ public class Pantalla extends javax.swing.JFrame {
     private static Cola stRefuerzo;
 
     private int cicloCont;
-
-    public static volatile Semaphore zSemaforo;
-    public static volatile Semaphore stSemaforo;
 
     public static Personaje zFigther;
     public static Personaje stFigther;
@@ -138,19 +135,24 @@ public class Pantalla extends javax.swing.JFrame {
         stColaP2 = new Cola(2);
         stColaP3 = new Cola(3);
         stRefuerzo = new Cola(4);
-        zSemaforo = new Semaphore(1);
-        stSemaforo = new Semaphore(1);
 
         velocidadPelea = velocidad.getValue();
-        
+
         this.llenarColas();
 
         while (true) {
             this.setCicloCont(this.getCicloCont() + 1);
             this.meterEnBatalla();
-            
+
+            // codigo de procesador
+            SO.actualizarContadores();
+            SO.actualizarColas(zColaP1, zColaP2, zColaP3, zColaP2, zPanel1, zPanel2, zPanel3);
+            SO.actualizarColas(zColaP1, zColaP2, zColaP3, zColaP3, zPanel1, zPanel2, zPanel3);
+            SO.actualizarColas(stColaP1, stColaP2, stColaP3, stColaP2, stPanel1, stPanel2, stPanel3);
+            SO.actualizarColas(stColaP1, stColaP2, stColaP3, stColaP3, stPanel1, stPanel2, stPanel3);
+
             System.out.println(velocidad.getValue());
-            
+
             if (this.getCicloCont() == 2) {
                 Random r = new Random();
                 int decision = r.nextInt(101);
@@ -160,7 +162,8 @@ public class Pantalla extends javax.swing.JFrame {
                 }
                 this.setCicloCont(0);
             }
-            do {} while (this.velocidadPelea == 0);
+            do {
+            } while (this.velocidadPelea == 0);
             sleep(100000 / this.velocidadPelea);
         }
     }
@@ -193,10 +196,6 @@ public class Pantalla extends javax.swing.JFrame {
         zPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         zPanel1 = new javax.swing.JPanel();
-        meter = new javax.swing.JButton();
-        borrar = new javax.swing.JButton();
-        revisar = new javax.swing.JButton();
-        aumentar = new javax.swing.JButton();
         velocidad = new javax.swing.JSlider();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -266,38 +265,6 @@ public class Pantalla extends javax.swing.JFrame {
         jScrollPane1.setViewportView(zPanel1);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 290, 100));
-
-        meter.setText("meter en batalla");
-        meter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                meterActionPerformed(evt);
-            }
-        });
-        jPanel1.add(meter, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 20, 120, -1));
-
-        borrar.setText("borrar");
-        borrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                borrarActionPerformed(evt);
-            }
-        });
-        jPanel1.add(borrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 20, -1, -1));
-
-        revisar.setText("revisar colas");
-        revisar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                revisarActionPerformed(evt);
-            }
-        });
-        jPanel1.add(revisar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 60, -1, -1));
-
-        aumentar.setText("aumentar priodidad");
-        aumentar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aumentarActionPerformed(evt);
-            }
-        });
-        jPanel1.add(aumentar, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 70, -1, -1));
 
         velocidad.setMajorTickSpacing(50);
         velocidad.setMinorTickSpacing(10);
@@ -378,8 +345,8 @@ public class Pantalla extends javax.swing.JFrame {
 
     public void meterEnBatalla() {
         try {
-            this.zFigther = SO.escogerPersonajes(zColaP1, zColaP2, zColaP3, zSemaforo, zPanel1, zPanel2, zPanel3);
-            this.stFigther = SO.escogerPersonajes(stColaP1, stColaP2, stColaP3, stSemaforo, stPanel1, stPanel2, stPanel3);
+            this.zFigther = SO.escogerPersonajes(zColaP1, zColaP2, zColaP3, zPanel1, zPanel2, zPanel3);
+            this.stFigther = SO.escogerPersonajes(stColaP1, stColaP2, stColaP3, stPanel1, stPanel2, stPanel3);
             this.pelea(zFigther, zFighterLabel);
             this.pelea(stFigther, stFigtherLabel);
         } catch (InterruptedException ex) {
@@ -387,56 +354,11 @@ public class Pantalla extends javax.swing.JFrame {
         }
     }
 
-    //Aquie en adelante son botones para probar como se ven las colas, como se actualizan y esas cosas
-    private void meterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_meterActionPerformed
-        try {
-            this.zFigther = SO.escogerPersonajes(zColaP1, zColaP2, zColaP3, zSemaforo, zPanel1, zPanel2, zPanel3);
-            this.stFigther = SO.escogerPersonajes(stColaP1, stColaP2, stColaP3, stSemaforo, stPanel1, stPanel2, stPanel3);
-            this.pelea(zFigther, zFighterLabel);
-            this.pelea(stFigther, stFigtherLabel);
-            this.setCicloCont(this.getCicloCont() + 1);
-            if (this.getCicloCont() == 2) {
-                Random r = new Random();
-                int decision = r.nextInt(101);
-                if (decision <= 80) {
-                    SO.agregarPersonaje(poolZelda, zColaP1, zColaP2, zColaP3, zPanel1, zPanel2, zPanel3);
-                    SO.agregarPersonaje(poolStreet, stColaP1, stColaP2, stColaP3, stPanel1, stPanel2, stPanel3);
-                }
-                this.setCicloCont(0);
-            }
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_meterActionPerformed
-
-    private void borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarActionPerformed
-        // TODO add your handling code here:
-        this.llenarColas();
-        System.out.println(zColaP1.imprimirCola());
-    }//GEN-LAST:event_borrarActionPerformed
-
-    private void aumentarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aumentarActionPerformed
-        // TODO add your handling code here:
-        SO.actualizarColas();
-    }//GEN-LAST:event_aumentarActionPerformed
-
-    private void revisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revisarActionPerformed
-        // TODO add your handling code here:
-        try {
-            SO.revisarColas(zColaP1, zColaP2, zColaP3, zColaP3, zSemaforo, zPanel1, zPanel2, zPanel3);
-            SO.revisarColas(zColaP1, zColaP2, zColaP3, zColaP2, zSemaforo, zPanel1, zPanel2, zPanel3);
-            SO.revisarColas(stColaP1, stColaP2, stColaP3, stColaP2, stSemaforo, stPanel1, stPanel2, stPanel3);
-            SO.revisarColas(stColaP1, stColaP2, stColaP3, stColaP3, stSemaforo, stPanel1, stPanel2, stPanel3);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_revisarActionPerformed
     /**
      * @return the poolZelda
      */
     public static Personaje[] getPoolZelda() {
         return poolZelda;
-
     }
 
     /**
@@ -616,8 +538,6 @@ public class Pantalla extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton aumentar;
-    private javax.swing.JButton borrar;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -631,8 +551,6 @@ public class Pantalla extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JButton meter;
-    private javax.swing.JButton revisar;
     public static javax.swing.JLabel stFigtherLabel;
     public static javax.swing.JPanel stPanel1;
     public static javax.swing.JPanel stPanel2;
