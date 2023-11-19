@@ -79,25 +79,25 @@ public class Personaje {
             // Si no, se multiplica por -1 el valor de la variable transitoria
             //props.setHabilidades(props.getHabilidades() * -1);
         }
-        
+        System.out.println(contadorCalidad);
         if (randVida > 30) {
             contadorCalidad++;
         } else {
             //props.setPuntosVida(props.getPuntosVida() * -1);
         }
-        
+        System.out.println(contadorCalidad);
         if (randFuerza > 50) {
             contadorCalidad++;
         } else {
             //props.setFuerza(props.getFuerza() * -1);
         }
-        
+        System.out.println(contadorCalidad);
         if (randAgilidad > 60) {
             contadorCalidad++;
         } else {
             //props.setAgilidad(props.getAgilidad() * -1);
         }
-        
+        System.out.println(contadorCalidad);
         if (contadorCalidad >= 3) {
             this.setTipo(1);
         } else if (contadorCalidad == 2){

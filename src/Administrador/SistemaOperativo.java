@@ -32,7 +32,7 @@ public class SistemaOperativo extends Thread {
     int cicloCont;  //Variable para contar los ciclos de revision 
     Semaphore zSemaforo;
     Semaphore stSemaforo;
-    boolean turno;
+    private boolean turno;
 
     public SistemaOperativo(){
         this.cicloCont=0;
@@ -42,8 +42,12 @@ public class SistemaOperativo extends Thread {
     @Override
     public void run(){
         while (true){
-            if(this.turno==true){
+            if(this.isTurno()==true){
                 try {
+                    if(Pantalla.contador>=8){
+                        Pantalla.contador=0;
+                    }
+                    this.actualizarColas();
                     this.cicloCont+=1;
                     this.revisarColas(Pantalla.getzColaP1(),Pantalla.getzColaP2(),Pantalla.getzColaP3(),Pantalla.getzColaP3(),Pantalla.zSemaforo,Pantalla.zPanelP1,Pantalla.zPanel2,Pantalla.zPanel3);
                     this.revisarColas(Pantalla.getzColaP1(),Pantalla.getzColaP2(),Pantalla.getzColaP3(),Pantalla.getzColaP2(),Pantalla.zSemaforo,Pantalla.zPanelP1,Pantalla.zPanel2,Pantalla.zPanel3);
@@ -51,15 +55,18 @@ public class SistemaOperativo extends Thread {
                     this.revisarColas(Pantalla.getStColaP1(),Pantalla.getStColaP2(),Pantalla.getStColaP3(),Pantalla.getStColaP2(),Pantalla.stSemaforo,Pantalla.stPanel1,Pantalla.stPanel2,Pantalla.stPanel3);
                     this.fighterZ=this.escogerPersonajes(Pantalla.getzColaP1(),Pantalla.getzColaP2(),Pantalla.getzColaP3(),Pantalla.zSemaforo,Pantalla.zPanelP1,Pantalla.zPanel2,Pantalla.zPanel3);
                     this.figtherST=this.escogerPersonajes(Pantalla.getStColaP1(),Pantalla.getStColaP2(),Pantalla.getStColaP3(),Pantalla.stSemaforo,Pantalla.stPanel1,Pantalla.stPanel2,Pantalla.stPanel3);
-                    Pantalla.pelea(fighterZ, Pantalla.zFighterLabel);
-                    Pantalla.pelea(figtherST, Pantalla.stFigtherLabel);
+                    Pantalla.pelea(fighterZ, Pantalla.zFighterLabel, Pantalla.zInfo1, Pantalla.zInfo2, Pantalla.zInfo3, Pantalla.zInfo4);
+                    Pantalla.pelea(figtherST, Pantalla.stFigtherLabel, Pantalla.stInfo1, Pantalla.stInfo2, Pantalla.stInfo3, Pantalla.stInfo4);
                     Pantalla.zFigther=fighterZ;
                     Pantalla.stFigther=figtherST;
-                    this.turno=false;
+                    this.setTurno(false);
+                    Pantalla.IA.setTurno(true);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(SistemaOperativo.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
+            }else{
+                System.out.println("Batallando");
             }
         }
     }
@@ -298,6 +305,20 @@ public class SistemaOperativo extends Thread {
 //        this.stRefuerzo = stRefuerzo;
 //    }
 //    
+
+    /**
+     * @return the turno
+     */
+    public boolean isTurno() {
+        return turno;
+    }
+
+    /**
+     * @param turno the turno to set
+     */
+    public void setTurno(boolean turno) {
+        this.turno = turno;
+    }
     
     
 }

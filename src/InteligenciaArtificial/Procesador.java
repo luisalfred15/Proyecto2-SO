@@ -6,6 +6,8 @@ import Interfaz.Pantalla;
 import static java.lang.Math.random;
 
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,6 +21,10 @@ public class Procesador extends Thread {
     private boolean turno;
     private int velocidad;
     private String resultado;
+    Personaje winner;
+    private String ganador;
+    int  aviso=0;
+    String logBattle="";
     public Procesador(){
         this.estado="Esperando";
         this.turno=false;
@@ -27,7 +33,39 @@ public class Procesador extends Thread {
     
     @Override
     public void run(){
-        
+        while(true){
+            if(turno==true){
+                try {
+                    this.setEstado("Decidiendo");
+                    Pantalla.estadoIA.setText(estado);
+                    this.insertarPeleadores();
+                    this.eleccion();
+                    sleep(10000);
+                    this.setEstado("Decidienco resultado");
+                    
+                    if(aviso==0){
+                        
+                    }else{
+                        Pantalla.labelCreation(winner, Pantalla.ganadores);
+                    }
+                    
+                    Pantalla.contVictoriasZ.setText(Integer.toString(Pantalla.zWins));
+                    Pantalla.contVictoriasSt.setText(Integer.toString(Pantalla.stWins));
+                    Pantalla.logBatalla.setText(logBattle);
+                    Pantalla.estadoIA.setText(estado);
+                    Pantalla.resultado.setText(resultado);
+                    Pantalla.SO.setTurno(true);
+                    this.turno=false;
+                    
+                    
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Procesador.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else{
+                this.setEstado("Esperando");
+                Pantalla.estadoIA.setText(estado);
+            }
+        }
     }
     
     
@@ -48,21 +86,160 @@ public class Procesador extends Thread {
         if(posibilidad<=2.7){
             //Empate
             this.empate();
-            
+            this.setResultado("Empate");
+            aviso=0;
         }else if (posibilidad<=3.3){
             //No combate
             this.noCombate();
-            
+            this.setResultado("No Combate");
+            aviso=0;
         }else {
             //Combate
-            this.combate();
+            winner=this.combate();
+            this.setResultado(ganador);
+            aviso=1;
         }
+        Pantalla.contador+=1;
+        Pantalla.cont1.setText(Integer.toString(Pantalla.contador));
     }
-    
-    public void combate(){
-        System.out.println("Combate");
+    public Personaje combate(){
+        this.zFigther.imprimirInfo();
+        this.stFigther.imprimirInfo();
+        
+        try {
+            boolean par=true;
+            logBattle+="Inicia la batalla\n";
+            while (par==true){
+                
+                this.imprimirVida();
+                System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,,>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                System.out.println("Turno: "+zFigther.getNombre());
+                logBattle+="Turno: "+zFigther.getNombre()+"\n";
+                this.defensa(zFigther, stFigther);
+                this.actualizarBarra();
+                if(stFigther.getPropiedades().getPuntosVida()<=0){
+                    System.out.println( "Perdedor: "+stFigther.getNombre());
+                    System.out.println( "Ganador: " +zFigther.getNombre());
+                    logBattle+="Perdedor: "+stFigther.getNombre()+"\n"+"Ganador: " +zFigther.getNombre()+"\n";
+                    Pantalla.zWins+=1;
+                    this.setGanador(this.zFigther.getNombre());
+                    this.imprimirVida();
+//                    Pantalla.labelCreation(zFigther, Pantalla.ganadores);
+                    return zFigther;
+//                    break;
+                } else if(zFigther.getPropiedades().getPuntosVida()<=0){
+                    System.out.println( "Perdedor: "+zFigther.getNombre());
+                    System.out.println( "Ganador: " +stFigther.getNombre());
+                    Pantalla.stWins+=1;
+                    logBattle+="Perdedor: "+zFigther.getNombre()+"\n"+"Ganador: " +stFigther.getNombre()+"\n";
+                    this.setGanador(this.stFigther.getNombre());
+                    this.imprimirVida();
+//                    Pantalla.labelCreation(stFigther, Pantalla.ganadores);
+                    return stFigther;
+//                    break;
+                }
+                
+                
+                this.imprimirVida();
+                System.out.println("Turno: "+stFigther.getNombre());
+                
+                this.defensa(stFigther, zFigther);
+                this.actualizarBarra();
+                if(zFigther.getPropiedades().getPuntosVida()<=0){
+                    System.out.println( "Perdedor: "+zFigther.getNombre());
+                    System.out.println( "Ganador: " +stFigther.getNombre());
+                    logBattle+="Perdedor: "+zFigther.getNombre()+"\n"+"Ganador: " +stFigther.getNombre()+"\n";
+                    Pantalla.stWins+=1;
+                    this.setGanador(this.stFigther.getNombre());
+                    this.imprimirVida();
+//                    Pantalla.labelCreation(stFigther, Pantalla.ganadores);
+                    return stFigther;
+//                    break;
+                } else if(stFigther.getPropiedades().getPuntosVida()<=0){
+                    System.out.println( "Perdedor: "+stFigther.getNombre());
+                    System.out.println( "Ganador: " +zFigther.getNombre());
+                    Pantalla.zWins+=1;
+                    logBattle+="Perdedor: "+stFigther.getNombre()+"\n"+"Ganador: " +zFigther.getNombre()+"\n";
+                    this.setGanador(this.zFigther.getNombre());
+//                    Pantalla.labelCreation(zFigther, Pantalla.ganadores);
+                   this.imprimirVida();
+                    return zFigther;
+//                    break;
+                }
+                 this.imprimirVida();
+                System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,,>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            }
+        } catch(Exception err){
+            
+        }
+        return null;
+    }
+    public void imprimirVida(){
+        System.out.println("Vida: " + zFigther.getNombre()+" " +zFigther.getPropiedades().getPuntosVida());
+        System.out.println("Vida: " + stFigther.getNombre()+" " +stFigther.getPropiedades().getPuntosVida());
+    }
+    public void actualizarBarra(){
+        Pantalla.bar1.setValue(this.zFigther.getPropiedades().getPuntosVida());
+        Pantalla.bar2.setValue(this.stFigther.getPropiedades().getPuntosVida());
+    }
+    public void defensa(Personaje atacante,  Personaje defensor){
+        
+        
+        Random rand= new Random();
+        int r= rand.nextInt(3);
+        
+        int zHab=atacante.getPropiedades().getHabilidades();
+        int zHP=atacante.getPropiedades().getPuntosVida();
+        int zAgi=atacante.getPropiedades().getAgilidad();
+        int zFuerza=atacante.getPropiedades().getFuerza();
+        
+        int stHab=defensor.getPropiedades().getHabilidades();
+        int stHP=defensor.getPropiedades().getPuntosVida();
+        int stAgi=defensor.getPropiedades().getAgilidad();
+        int stFuerza=defensor.getPropiedades().getFuerza();
+        
+      
         
         try{
+            
+                //Ataque 1 De Zfighter a stFighter
+                if(r==0){
+                    System.out.println( atacante.getNombre()+" dio un " +" golpe directo");
+                    logBattle+= atacante.getNombre()+" dio un " +" golpe directo"+"\n";
+                    defensor.getPropiedades().setPuntosVida(defensor.getPropiedades().getPuntosVida()-zFuerza);
+                    
+                }else if(r==1){
+                    //Agilidad. Compara el valor de agilidad con un random, si el random es mayor que el valor de agilidad recibe un golpe directo
+                    int randAg= rand.nextInt(101);
+                    if(randAg>stAgi){
+                        //Golpe directo
+                        System.out.println(atacante.getNombre()+" dio un " +" golpe directo");
+                        logBattle+= atacante.getNombre()+" dio un " +" golpe directo"+"\n";
+                        defensor.getPropiedades().setPuntosVida(defensor.getPropiedades().getPuntosVida()-zFuerza);
+                    }else if(randAg==stAgi){
+                        //Bloquea el golpe 
+                        System.out.println(defensor.getNombre()+" bloqueo el ataque" );
+                        logBattle+=defensor.getNombre()+" bloqueo el ataque"+"\n";
+                        stHP= stHP-5;
+                        zHP= zHP-10;
+                    }else{
+                        //Esquivo con exito
+                        System.out.println( defensor.getNombre() + " Esquivo el ataque de " +atacante.getNombre());
+                        logBattle+=defensor.getNombre() + " Esquivo el ataque de " +atacante.getNombre()+"\n";
+                    }
+                }else{
+                    //Habilidad. Compara el valor de habilidad con un random, si el random es mayor que el valor de habilidad recibe un golpe directo
+                    int randHab= rand.nextInt(101);
+                    if (randHab>stHab ){
+                        System.out.println(atacante.getNombre()+" dio un " +" golpe directo");
+                        logBattle+=atacante.getNombre()+" dio un " +" golpe directo\n";
+                        defensor.getPropiedades().setPuntosVida(defensor.getPropiedades().getPuntosVida()-zFuerza);
+                    }else if(randHab<=stHab){
+                        System.out.println(defensor.getNombre() + " Devolvio el ataque de " + atacante.getNombre());
+                        logBattle+=defensor.getNombre() + " Devolvio el ataque de " + atacante.getNombre()+ "\n";
+                        atacante.getPropiedades().setPuntosVida( atacante.getPropiedades().getPuntosVida()-zFuerza);
+                    }
+                }
             
         }catch(Exception err){
             
@@ -71,6 +248,7 @@ public class Procesador extends Thread {
     public void empate(){
         System.out.println("Empate");
          try{
+             logBattle+="Empate\n";
             Pantalla.getzColaP1().encolar(this.zFigther);            
             Pantalla.labelCreation(zFigther, Pantalla.zPanelP1);
             Pantalla.getStColaP1().encolar(this.stFigther);            
@@ -84,6 +262,7 @@ public class Procesador extends Thread {
     public void noCombate(){
         System.out.println("No combate");
          try{
+             logBattle+="No combate\n";
             Pantalla.getzRefuerzo().encolar(this.zFigther);            
             Pantalla.labelCreation(zFigther, Pantalla.zPanel4);
             Pantalla.getStRefuerzo().encolar(this.stFigther);            
@@ -176,5 +355,19 @@ public class Procesador extends Thread {
      */
     public void setResultado(String resultado) {
         this.resultado = resultado;
+    }
+
+    /**
+     * @return the ganador
+     */
+    public String getGanador() {
+        return ganador;
+    }
+
+    /**
+     * @param ganador the ganador to set
+     */
+    public void setGanador(String ganador) {
+        this.ganador = ganador;
     }
 }

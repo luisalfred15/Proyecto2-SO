@@ -8,6 +8,7 @@ import Administrador.SistemaOperativo;
 import Clases.Cola;
 import Clases.Personaje;
 import Clases.Propiedades;
+import InteligenciaArtificial.Procesador;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -57,7 +58,16 @@ public class Pantalla extends javax.swing.JFrame {
     public static Personaje zFigther;
     public static Personaje stFigther;
     
-    public SistemaOperativo SO= new SistemaOperativo();
+    public static SistemaOperativo SO= new SistemaOperativo();
+    public static Procesador IA= new Procesador();
+    
+    public static int zWins=0;
+    public static int stWins=0;
+    
+    public static int contador=0;
+    
+    
+    
     /**
      * Creates new form Pantalla
      */
@@ -133,6 +143,11 @@ public class Pantalla extends javax.swing.JFrame {
         stRefuerzo=new Cola(4);
         zSemaforo= new Semaphore(1);
         stSemaforo= new Semaphore(1);
+        
+//        this.llenarColas();
+//        this.SO.setTurno(true);
+//        SO.start();
+//        IA.start();
     }
 
     /**
@@ -166,16 +181,39 @@ public class Pantalla extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         zPanelP1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        label1 = new javax.swing.JLabel();
+        label2 = new javax.swing.JLabel();
+        label3 = new javax.swing.JLabel();
+        label4 = new javax.swing.JLabel();
+        label5 = new javax.swing.JLabel();
+        label6 = new javax.swing.JLabel();
+        label7 = new javax.swing.JLabel();
+        label8 = new javax.swing.JLabel();
+        bar1 = new javax.swing.JProgressBar();
+        bar2 = new javax.swing.JProgressBar();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         contVictoriasSt = new javax.swing.JLabel();
         contVictoriasZ = new javax.swing.JLabel();
         velocidad = new javax.swing.JSlider();
+        resultado = new javax.swing.JLabel();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        logBatalla = new javax.swing.JTextArea();
+        estadoIA = new javax.swing.JLabel();
+        cont1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        zInfo2 = new javax.swing.JLabel();
+        zInfo3 = new javax.swing.JLabel();
+        zInfo4 = new javax.swing.JLabel();
+        stInfo1 = new javax.swing.JLabel();
+        stInfo2 = new javax.swing.JLabel();
+        stInfo3 = new javax.swing.JLabel();
+        stInfo4 = new javax.swing.JLabel();
+        zInfo1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -183,21 +221,23 @@ public class Pantalla extends javax.swing.JFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        stFigtherLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         stFigtherLabel.setText("stFigther");
         stFigtherLabel.setToolTipText("");
         stFigtherLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         stFigtherLabel.setFocusable(false);
         stFigtherLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         stFigtherLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        jPanel1.add(stFigtherLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 480, 180, 160));
+        jPanel1.add(stFigtherLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 290, 180, 160));
 
+        zFighterLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         zFighterLabel.setText("zFigther");
         zFighterLabel.setToolTipText("");
         zFighterLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         zFighterLabel.setFocusable(false);
         zFighterLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         zFighterLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        jPanel1.add(zFighterLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 480, 180, 160));
+        jPanel1.add(zFighterLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 290, 180, 160));
 
         stPanel4.setBackground(new java.awt.Color(0, 0, 0));
         jScrollPane8.setViewportView(stPanel4);
@@ -256,6 +296,52 @@ public class Pantalla extends javax.swing.JFrame {
         });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 710, 120, -1));
 
+        label1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label1.setText(":Fuerza");
+        label1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(label1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 500, 50, 30));
+
+        label2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label2.setText(":Habilidad");
+        label2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(label2, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 530, 60, 30));
+
+        label3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label3.setText(":Agilidad");
+        label3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(label3, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 560, 80, 30));
+
+        label4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label4.setText(": Vida");
+        label4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(label4, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 470, 40, 30));
+
+        label5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label5.setText("Vida:");
+        label5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(label5, new org.netbeans.lib.awtextra.AbsoluteConstraints(398, 470, 80, 30));
+
+        label6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label6.setText("Fuerza:");
+        label6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(label6, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 500, 80, 30));
+
+        label7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label7.setText("Habilidad: ");
+        label7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(label7, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 530, 80, 30));
+
+        label8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label8.setText("Agilidad: ");
+        label8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(label8, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 560, 80, 30));
+
+        bar1.setValue(50);
+        jPanel1.add(bar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 240, -1, 30));
+
+        bar2.setValue(50);
+        jPanel1.add(bar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 240, -1, 30));
+
         jButton2.setText("borrar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -282,11 +368,11 @@ public class Pantalla extends javax.swing.JFrame {
 
         contVictoriasSt.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         contVictoriasSt.setForeground(new java.awt.Color(0, 0, 0));
-        contVictoriasSt.setText("Victorias ");
+        contVictoriasSt.setText("0");
         jPanel1.add(contVictoriasSt, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 660, 100, 40));
 
         contVictoriasZ.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        contVictoriasZ.setText("Victorias ");
+        contVictoriasZ.setText("0");
         jPanel1.add(contVictoriasZ, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 660, 100, 40));
 
         velocidad.setMajorTickSpacing(50);
@@ -300,6 +386,21 @@ public class Pantalla extends javax.swing.JFrame {
         });
         jPanel1.add(velocidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 730, 450, 50));
 
+        resultado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(resultado, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 470, 180, 170));
+
+        logBatalla.setColumns(20);
+        logBatalla.setRows(5);
+        jScrollPane10.setViewportView(logBatalla);
+
+        jPanel1.add(jScrollPane10, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 120, 240, 110));
+
+        estadoIA.setText("Estado");
+        jPanel1.add(estadoIA, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 140, 80, 40));
+
+        cont1.setText("jLabel1");
+        jPanel1.add(cont1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 20, 60, 30));
+
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("1");
@@ -310,13 +411,37 @@ public class Pantalla extends javax.swing.JFrame {
         jLabel4.setText("0");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 770, 40, -1));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesInterfaz/pantalla_fondo.png"))); // NOI18N
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 860));
-
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("0,5");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 770, 40, -1));
+
+        zInfo2.setText("0");
+        jPanel1.add(zInfo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 500, 60, 30));
+
+        zInfo3.setText("0");
+        jPanel1.add(zInfo3, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 530, 60, 30));
+
+        zInfo4.setText("0");
+        jPanel1.add(zInfo4, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 560, 60, 30));
+
+        stInfo1.setText("0");
+        jPanel1.add(stInfo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 470, 30, 30));
+
+        stInfo2.setText("0");
+        jPanel1.add(stInfo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 500, 20, 30));
+
+        stInfo3.setText("0");
+        jPanel1.add(stInfo3, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 530, 20, 30));
+
+        stInfo4.setText("0");
+        jPanel1.add(stInfo4, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 560, 20, 30));
+
+        zInfo1.setText("0");
+        jPanel1.add(zInfo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 476, 50, 20));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesInterfaz/pantalla_fondo.png"))); // NOI18N
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 860));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 860));
 
@@ -325,6 +450,7 @@ public class Pantalla extends javax.swing.JFrame {
 
     private void velocidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_velocidadStateChanged
         velocidadPelea = velocidad.getValue();
+        System.out.println(velocidadPelea);
     }//GEN-LAST:event_velocidadStateChanged
     //LLena las colas al inicio de la simulacion
     public void llenarColas(){
@@ -377,14 +503,17 @@ public class Pantalla extends javax.swing.JFrame {
     }
     
     //Monta los personajes en Las variables peleador 
-    public static void pelea(Personaje p, JLabel l){
+    public static void pelea(Personaje p, JLabel l, JLabel info1, JLabel info2, JLabel info3, JLabel info4){
         
         ImageIcon fot= new ImageIcon(p.getRutaImagen());
         ImageIcon icon=new ImageIcon(fot.getImage().getScaledInstance(l.getWidth(), l.getHeight(), Image.SCALE_DEFAULT));
-   
+        l.setText(p.getNombre());
         l.setIcon(icon);
         l.repaint();
-        
+        info1.setText(Integer.toString(p.getPropiedades().getPuntosVida()));
+        info2.setText(Integer.toString(p.getPropiedades().getFuerza()));
+        info3.setText(Integer.toString(p.getPropiedades().getHabilidades()));
+        info4.setText(Integer.toString(p.getPropiedades().getAgilidad()));
     }
     
     //Aquie en adelante son botones para probar como se ven las colas, como se actualizan y esas cosas
@@ -393,8 +522,14 @@ public class Pantalla extends javax.swing.JFrame {
         try {
             this.zFigther= SO.escogerPersonajes(zColaP1, zColaP2, zColaP3, zSemaforo, zPanelP1, zPanel2, zPanel3);
             this.stFigther= SO.escogerPersonajes(stColaP1, stColaP2, stColaP3, stSemaforo, stPanel1, stPanel2, stPanel3);
-            this.pelea(zFigther, zFighterLabel);
-            this.pelea(stFigther, stFigtherLabel);
+            this.bar1.setValue(zFigther.getPropiedades().getPuntosVida());
+            this.bar2.setValue(stFigther.getPropiedades().getPuntosVida());
+            this.pelea(zFigther, zFighterLabel, zInfo1, zInfo2, zInfo3, zInfo4);
+            this.pelea(stFigther, stFigtherLabel, stInfo1, stInfo2, stInfo3, stInfo4);
+//            this.label1.setText("Vida: " + this.zFigther.getPropiedades().getPuntosVida() + "\n" + " Fuerza: " + this.zFigther.getPropiedades().getFuerza() + "\n" +  "Habilidad: " + this.zFigther.getPropiedades().getHabilidades()+ "\n"  +  "Agilidad " + this.zFigther.getPropiedades().getAgilidad()+ "\n"   );
+//            System.out.println("Vida: " + this.zFigther.getPropiedades().getPuntosVida() + "\n" + " Fuerza: " + this.zFigther.getPropiedades().getFuerza() + "\n" +  "Habilidad: " + this.zFigther.getPropiedades().getHabilidades()+ "\n"  +  "Agilidad " + this.zFigther.getPropiedades().getAgilidad()+ "\n");
+
+//            this.infoLabelSt.setText("Vida: " + this.stFigther.getPropiedades().getPuntosVida() + "\n" + "Fuerza: " + this.stFigther.getPropiedades().getFuerza() + "\n" +  "Habilidad: " + this.stFigther.getPropiedades().getHabilidades()+ "\n"  +  "Agilidad " + this.stFigther.getPropiedades().getAgilidad()+ "\n"   );
         } catch (InterruptedException ex) {
             Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -418,13 +553,19 @@ public class Pantalla extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        velocidadPelea = velocidad.getValue();
+            System.out.println(velocidadPelea);
         this.llenarColas();
         System.out.println(zColaP1.imprimirCola());
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        SO.actualizarColas();
+        this.llenarColas();
+        this.SO.setTurno(true);
+        SO.start();
+        IA.start();
+  
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -434,6 +575,7 @@ public class Pantalla extends javax.swing.JFrame {
             SO.revisarColas(zColaP1, zColaP2, zColaP3, zColaP2, zSemaforo, zPanelP1, zPanel2, zPanel3);
             SO.revisarColas(stColaP1, stColaP2, stColaP3, stColaP2, stSemaforo, stPanel1, stPanel2, stPanel3);
             SO.revisarColas(stColaP1, stColaP2, stColaP3, stColaP3, stSemaforo, stPanel1, stPanel2, stPanel3);
+            
         } catch (InterruptedException ex) {
             Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -618,9 +760,13 @@ public class Pantalla extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel contVictoriasSt;
-    private javax.swing.JLabel contVictoriasZ;
-    private javax.swing.JPanel ganadores;
+    public static javax.swing.JProgressBar bar1;
+    public static javax.swing.JProgressBar bar2;
+    public static javax.swing.JLabel cont1;
+    public static javax.swing.JLabel contVictoriasSt;
+    public static javax.swing.JLabel contVictoriasZ;
+    public static javax.swing.JLabel estadoIA;
+    public static javax.swing.JPanel ganadores;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -631,6 +777,7 @@ public class Pantalla extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -639,13 +786,31 @@ public class Pantalla extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
+    private javax.swing.JLabel label1;
+    private javax.swing.JLabel label2;
+    private javax.swing.JLabel label3;
+    private javax.swing.JLabel label4;
+    private javax.swing.JLabel label5;
+    private javax.swing.JLabel label6;
+    private javax.swing.JLabel label7;
+    private javax.swing.JLabel label8;
+    public static javax.swing.JTextArea logBatalla;
+    public static javax.swing.JLabel resultado;
     public static javax.swing.JLabel stFigtherLabel;
+    public static javax.swing.JLabel stInfo1;
+    public static javax.swing.JLabel stInfo2;
+    public static javax.swing.JLabel stInfo3;
+    public static javax.swing.JLabel stInfo4;
     public static javax.swing.JPanel stPanel1;
     public static javax.swing.JPanel stPanel2;
     public static javax.swing.JPanel stPanel3;
     public static javax.swing.JPanel stPanel4;
-    private javax.swing.JSlider velocidad;
+    public static javax.swing.JSlider velocidad;
     public static javax.swing.JLabel zFighterLabel;
+    public static javax.swing.JLabel zInfo1;
+    public static javax.swing.JLabel zInfo2;
+    public static javax.swing.JLabel zInfo3;
+    public static javax.swing.JLabel zInfo4;
     public static javax.swing.JPanel zPanel2;
     public static javax.swing.JPanel zPanel3;
     public static javax.swing.JPanel zPanel4;
