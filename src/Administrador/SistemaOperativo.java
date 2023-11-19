@@ -14,6 +14,7 @@ import static Interfaz.Pantalla.zPanel3;
 import static Interfaz.Pantalla.zPanelP1;
 import static Interfaz.Pantalla.zSemaforo;
 import java.io.IOException;
+import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,11 +45,16 @@ public class SistemaOperativo extends Thread {
         while (true){
             if(this.isTurno()==true){
                 try {
+                    this.cicloCont+=1;
                     if(Pantalla.contador>=8){
                         Pantalla.contador=0;
                     }
+                    if(cicloCont>=2){
+                        this.agregarPersonaje(Pantalla.getPoolZelda(), Pantalla.getzColaP1(), Pantalla.getzColaP2(), Pantalla.getzColaP3(), Pantalla.zPanelP1, Pantalla.zPanel2, Pantalla.zPanel3);
+                        this.agregarPersonaje(Pantalla.getPoolStreet(), Pantalla.getStColaP1(), Pantalla.getStColaP2(), Pantalla.getStColaP3(), Pantalla.stPanel1, Pantalla.stPanel2, Pantalla.stPanel3);
+                        this.cicloCont=0;
+                    }
                     this.actualizarColas();
-                    this.cicloCont+=1;
                     this.revisarColas(Pantalla.getzColaP1(),Pantalla.getzColaP2(),Pantalla.getzColaP3(),Pantalla.getzColaP3(),Pantalla.zSemaforo,Pantalla.zPanelP1,Pantalla.zPanel2,Pantalla.zPanel3);
                     this.revisarColas(Pantalla.getzColaP1(),Pantalla.getzColaP2(),Pantalla.getzColaP3(),Pantalla.getzColaP2(),Pantalla.zSemaforo,Pantalla.zPanelP1,Pantalla.zPanel2,Pantalla.zPanel3);
                     this.revisarColas(Pantalla.getStColaP1(),Pantalla.getStColaP2(),Pantalla.getStColaP3(),Pantalla.getStColaP3(),Pantalla.stSemaforo,Pantalla.stPanel1,Pantalla.stPanel2,Pantalla.stPanel3);
@@ -154,13 +160,26 @@ public class SistemaOperativo extends Thread {
     
 
     //Agregar personajes cada dos ciclos de revision
-    public void agregarPersonaje(){
-        
-    }
-       //metodo a ser ejecuto cuando inicie la simulacion. Metodo que iba a ser y termino no siendo  jeje      
-     public void llenarColas() {
-            
-     }           
+    public void agregarPersonaje(Personaje[] pool, Cola P1, Cola P2, Cola P3, JPanel P1UI, JPanel P2UI, JPanel P3UI) throws InterruptedException {
+        Random r = new Random();
+
+        int posicion = r.nextInt(10);
+
+        Personaje elegido = pool[posicion];
+        elegido.determinarTipo();
+
+        if (elegido.getTipo() == 3) {
+            P3.encolar(elegido);
+            Pantalla.labelCreation(elegido, P3UI);
+        } else if (elegido.getTipo() == 2) {
+            P2.encolar(elegido);
+            Pantalla.labelCreation(elegido, P2UI);
+        } else {
+            P1.encolar(elegido);
+            Pantalla.labelCreation(elegido, P1UI);
+        }
+
+    } 
             
             
     
