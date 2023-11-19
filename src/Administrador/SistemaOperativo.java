@@ -13,6 +13,7 @@ import static Interfaz.Pantalla.zPanel2;
 import static Interfaz.Pantalla.zPanel3;
 import static Interfaz.Pantalla.zPanelP1;
 import static Interfaz.Pantalla.zSemaforo;
+import java.awt.Component;
 import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
@@ -29,7 +30,9 @@ public class SistemaOperativo extends Thread {
 
     private Personaje fighterZ;
     private Personaje figtherST;
-
+    
+    int zIds=10;
+    int stIds=10;
     int cicloCont;  //Variable para contar los ciclos de revision 
     Semaphore zSemaforo;
     Semaphore stSemaforo;
@@ -47,12 +50,23 @@ public class SistemaOperativo extends Thread {
                 try {
                     this.cicloCont+=1;
                     if(Pantalla.contador>=8){
+                        this.agregarRefuerzo(Pantalla.getzColaP1(),Pantalla.getzColaP2(),Pantalla.getzColaP3(),Pantalla.getzRefuerzo(),Pantalla.zPanelP1,Pantalla.zPanel2,Pantalla.zPanel3,Pantalla.zPanel4);
+                        this.agregarRefuerzo(Pantalla.getStColaP1(),Pantalla.getStColaP2(),Pantalla.getStColaP3(),Pantalla.getStRefuerzo(),Pantalla.stPanel1,Pantalla.stPanel2,Pantalla.stPanel3,Pantalla.stPanel4);
                         Pantalla.contador=0;
                     }
                     if(cicloCont>=2){
-                        this.agregarPersonaje(Pantalla.getPoolZelda(), Pantalla.getzColaP1(), Pantalla.getzColaP2(), Pantalla.getzColaP3(), Pantalla.zPanelP1, Pantalla.zPanel2, Pantalla.zPanel3);
-                        this.agregarPersonaje(Pantalla.getPoolStreet(), Pantalla.getStColaP1(), Pantalla.getStColaP2(), Pantalla.getStColaP3(), Pantalla.stPanel1, Pantalla.stPanel2, Pantalla.stPanel3);
-                        this.cicloCont=0;
+                           Random r = new Random();
+                            int decision = r.nextInt(101);
+                            if (decision >= 20) {
+                            this.zIds+=1;
+                            this.stIds+=1;
+                            this.agregarPersonaje(Pantalla.getPoolZelda(), Pantalla.getzColaP1(), Pantalla.getzColaP2(), Pantalla.getzColaP3(), Pantalla.zPanelP1, Pantalla.zPanel2, Pantalla.zPanel3,this.zIds);
+                            this.agregarPersonaje(Pantalla.getPoolStreet(), Pantalla.getStColaP1(), Pantalla.getStColaP2(), Pantalla.getStColaP3(), Pantalla.stPanel1, Pantalla.stPanel2, Pantalla.stPanel3, this.stIds);
+                }
+                            this.cicloCont=0;
+                                
+                    
+              
                     }
                     this.actualizarColas();
                     this.revisarColas(Pantalla.getzColaP1(),Pantalla.getzColaP2(),Pantalla.getzColaP3(),Pantalla.getzColaP3(),Pantalla.zSemaforo,Pantalla.zPanelP1,Pantalla.zPanel2,Pantalla.zPanel3);
@@ -151,6 +165,8 @@ public class SistemaOperativo extends Thread {
             zP3.updateUI();
         }else{
             System.out.println("No hay personajes disponibles, insertar 10 mas");
+            this.llenarColas(Pantalla.getPoolStreet(),Pantalla.getStColaP1(),Pantalla.getStColaP2(),Pantalla.getStColaP3(),Pantalla.stPanel1,Pantalla.stPanel2,Pantalla.stPanel3);
+            this.llenarColas(Pantalla.getPoolZelda(),Pantalla.getzColaP1(),Pantalla.getzColaP2(),Pantalla.getzColaP3(),Pantalla.zPanelP1,Pantalla.zPanel2,Pantalla.zPanel3);
         }
         return aux;
         }catch(Exception err){
@@ -160,14 +176,13 @@ public class SistemaOperativo extends Thread {
     
 
     //Agregar personajes cada dos ciclos de revision
-    public void agregarPersonaje(Personaje[] pool, Cola P1, Cola P2, Cola P3, JPanel P1UI, JPanel P2UI, JPanel P3UI) throws InterruptedException {
+    public void agregarPersonaje(Personaje[] pool, Cola P1, Cola P2, Cola P3, JPanel P1UI, JPanel P2UI, JPanel P3UI, int zId) throws InterruptedException {
         Random r = new Random();
-
         int posicion = r.nextInt(10);
 
         Personaje elegido = pool[posicion];
         elegido.determinarTipo();
-
+        elegido.setId("z"+Integer.toString(zId));
         if (elegido.getTipo() == 3) {
             P3.encolar(elegido);
             Pantalla.labelCreation(elegido, P3UI);
@@ -180,10 +195,43 @@ public class SistemaOperativo extends Thread {
         }
 
     } 
+    public void agregarRefuerzo(Cola p1, Cola p2, Cola p3, Cola p4, JPanel zP1, JPanel zP2, JPanel zP3, JPanel zP4){
+                
+            
+            if(!p4.esVacia()){
+                Random rand = new Random();
+                if(rand.nextInt(101)>60){
+                    Personaje aux= p4.getNodoCabeza().getDatos();
+                    p4.desencolar();
+                    aux.setTipo(1);
+                    p1.encolar(aux);
+                    zP1.add(zP4.getComponent(0));
+                    zP4.updateUI();
+                    zP1.updateUI();
+                }
             
             
-    
-    
+            
+                
+            
+        }else{
+                System.out.println("Nada que sacar ");
+            }
+    }
+     public void llenarColas(Personaje[] pool, Cola P1, Cola P2, Cola P3, JPanel P1UI, JPanel P2UI, JPanel P3UI) {
+        for (Personaje p : pool) {
+            if (p.getTipo() == 1) {
+                P1.encolar(p);
+                Pantalla.labelCreation(p, P1UI);
+            } else if (p.getTipo() == 2) {
+                P2.encolar(p);
+                Pantalla.labelCreation(p, P2UI);
+            } else if (p.getTipo() == 3) {
+                P3.encolar(p);
+                Pantalla.labelCreation(p, P3UI);
+            }
+        }
+    }
     /**
      * @return the fighterZ
      */

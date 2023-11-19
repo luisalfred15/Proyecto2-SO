@@ -144,10 +144,10 @@ public class Pantalla extends javax.swing.JFrame {
         zSemaforo= new Semaphore(1);
         stSemaforo= new Semaphore(1);
         
-//        this.llenarColas();
-//        this.SO.setTurno(true);
-//        SO.start();
-//        IA.start();
+        this.llenarColas();
+        this.SO.setTurno(true);
+        SO.start();
+        IA.start();
     }
 
     /**
@@ -180,7 +180,6 @@ public class Pantalla extends javax.swing.JFrame {
         ganadores = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         zPanelP1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         label1 = new javax.swing.JLabel();
         label2 = new javax.swing.JLabel();
         label3 = new javax.swing.JLabel();
@@ -191,9 +190,6 @@ public class Pantalla extends javax.swing.JFrame {
         label8 = new javax.swing.JLabel();
         bar1 = new javax.swing.JProgressBar();
         bar2 = new javax.swing.JProgressBar();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         contVictoriasSt = new javax.swing.JLabel();
         contVictoriasZ = new javax.swing.JLabel();
         velocidad = new javax.swing.JSlider();
@@ -214,6 +210,10 @@ public class Pantalla extends javax.swing.JFrame {
         stInfo4 = new javax.swing.JLabel();
         zInfo1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -288,14 +288,6 @@ public class Pantalla extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 290, 100));
 
-        jButton1.setText("meter en batalla");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 710, 120, -1));
-
         label1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label1.setText(":Fuerza");
         label1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -342,42 +334,23 @@ public class Pantalla extends javax.swing.JFrame {
         bar2.setValue(50);
         jPanel1.add(bar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 240, -1, 30));
 
-        jButton2.setText("borrar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 710, -1, -1));
-
-        jButton3.setText("revisar colas");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 710, -1, -1));
-
-        jButton4.setText("aumentar priodidad");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 710, -1, -1));
-
         contVictoriasSt.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         contVictoriasSt.setForeground(new java.awt.Color(0, 0, 0));
         contVictoriasSt.setText("0");
         jPanel1.add(contVictoriasSt, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 660, 100, 40));
 
+        contVictoriasZ.setBackground(new java.awt.Color(255, 255, 255));
         contVictoriasZ.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        contVictoriasZ.setForeground(new java.awt.Color(255, 255, 255));
         contVictoriasZ.setText("0");
         jPanel1.add(contVictoriasZ, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 660, 100, 40));
 
-        velocidad.setMajorTickSpacing(50);
-        velocidad.setMinorTickSpacing(10);
+        velocidad.setMajorTickSpacing(1000);
+        velocidad.setMaximum(10000);
+        velocidad.setMinimum(1000);
+        velocidad.setMinorTickSpacing(100);
         velocidad.setPaintTicks(true);
+        velocidad.setValue(10000);
         velocidad.setOpaque(false);
         velocidad.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -403,17 +376,17 @@ public class Pantalla extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel2.setText("1");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 770, 20, -1));
+        jLabel2.setText("10");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 770, 30, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("0");
+        jLabel4.setText("1");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 770, 40, -1));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel5.setText("0,5");
+        jLabel5.setText("5");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 770, 40, -1));
 
         zInfo2.setText("0");
@@ -443,6 +416,38 @@ public class Pantalla extends javax.swing.JFrame {
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesInterfaz/pantalla_fondo.png"))); // NOI18N
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 860));
 
+        jButton4.setText("aumentar priodidad");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 710, -1, -1));
+
+        jButton1.setText("meter en batalla");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 710, 120, -1));
+
+        jButton2.setText("borrar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 710, -1, -1));
+
+        jButton3.setText("revisar colas");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 710, -1, -1));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 860));
 
         pack();
@@ -450,6 +455,7 @@ public class Pantalla extends javax.swing.JFrame {
 
     private void velocidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_velocidadStateChanged
         velocidadPelea = velocidad.getValue();
+//        this.tiempo.setText(Integer.toString(velocidadPelea));
         System.out.println(velocidadPelea);
     }//GEN-LAST:event_velocidadStateChanged
     //LLena las colas al inicio de la simulacion
@@ -519,21 +525,21 @@ public class Pantalla extends javax.swing.JFrame {
     //Aquie en adelante son botones para probar como se ven las colas, como se actualizan y esas cosas
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        try {
-            this.zFigther= SO.escogerPersonajes(zColaP1, zColaP2, zColaP3, zSemaforo, zPanelP1, zPanel2, zPanel3);
-            this.stFigther= SO.escogerPersonajes(stColaP1, stColaP2, stColaP3, stSemaforo, stPanel1, stPanel2, stPanel3);
-            this.bar1.setValue(zFigther.getPropiedades().getPuntosVida());
-            this.bar2.setValue(stFigther.getPropiedades().getPuntosVida());
-            this.pelea(zFigther, zFighterLabel, zInfo1, zInfo2, zInfo3, zInfo4);
-            this.pelea(stFigther, stFigtherLabel, stInfo1, stInfo2, stInfo3, stInfo4);
-//            this.label1.setText("Vida: " + this.zFigther.getPropiedades().getPuntosVida() + "\n" + " Fuerza: " + this.zFigther.getPropiedades().getFuerza() + "\n" +  "Habilidad: " + this.zFigther.getPropiedades().getHabilidades()+ "\n"  +  "Agilidad " + this.zFigther.getPropiedades().getAgilidad()+ "\n"   );
-//            System.out.println("Vida: " + this.zFigther.getPropiedades().getPuntosVida() + "\n" + " Fuerza: " + this.zFigther.getPropiedades().getFuerza() + "\n" +  "Habilidad: " + this.zFigther.getPropiedades().getHabilidades()+ "\n"  +  "Agilidad " + this.zFigther.getPropiedades().getAgilidad()+ "\n");
-
-//            this.infoLabelSt.setText("Vida: " + this.stFigther.getPropiedades().getPuntosVida() + "\n" + "Fuerza: " + this.stFigther.getPropiedades().getFuerza() + "\n" +  "Habilidad: " + this.stFigther.getPropiedades().getHabilidades()+ "\n"  +  "Agilidad " + this.stFigther.getPropiedades().getAgilidad()+ "\n"   );
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+//        try {
+//            this.zFigther= SO.escogerPersonajes(zColaP1, zColaP2, zColaP3, zSemaforo, zPanelP1, zPanel2, zPanel3);
+//            this.stFigther= SO.escogerPersonajes(stColaP1, stColaP2, stColaP3, stSemaforo, stPanel1, stPanel2, stPanel3);
+//            this.bar1.setValue(zFigther.getPropiedades().getPuntosVida());
+//            this.bar2.setValue(stFigther.getPropiedades().getPuntosVida());
+//            this.pelea(zFigther, zFighterLabel, zInfo1, zInfo2, zInfo3, zInfo4);
+//            this.pelea(stFigther, stFigtherLabel, stInfo1, stInfo2, stInfo3, stInfo4);
+////            this.label1.setText("Vida: " + this.zFigther.getPropiedades().getPuntosVida() + "\n" + " Fuerza: " + this.zFigther.getPropiedades().getFuerza() + "\n" +  "Habilidad: " + this.zFigther.getPropiedades().getHabilidades()+ "\n"  +  "Agilidad " + this.zFigther.getPropiedades().getAgilidad()+ "\n"   );
+////            System.out.println("Vida: " + this.zFigther.getPropiedades().getPuntosVida() + "\n" + " Fuerza: " + this.zFigther.getPropiedades().getFuerza() + "\n" +  "Habilidad: " + this.zFigther.getPropiedades().getHabilidades()+ "\n"  +  "Agilidad " + this.zFigther.getPropiedades().getAgilidad()+ "\n");
+//
+////            this.infoLabelSt.setText("Vida: " + this.stFigther.getPropiedades().getPuntosVida() + "\n" + "Fuerza: " + this.stFigther.getPropiedades().getFuerza() + "\n" +  "Habilidad: " + this.stFigther.getPropiedades().getHabilidades()+ "\n"  +  "Agilidad " + this.stFigther.getPropiedades().getAgilidad()+ "\n"   );
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        
         
         
 //        zPanelP1.remove(this.zPanelP1.getComponent(0));
@@ -553,10 +559,10 @@ public class Pantalla extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        velocidadPelea = velocidad.getValue();
-            System.out.println(velocidadPelea);
-        this.llenarColas();
-        System.out.println(zColaP1.imprimirCola());
+//        velocidadPelea = velocidad.getValue();
+//            System.out.println(velocidadPelea);
+//        this.llenarColas();
+//        System.out.println(zColaP1.imprimirCola());
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -570,15 +576,15 @@ public class Pantalla extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        try {
-            SO.revisarColas(zColaP1, zColaP2, zColaP3, zColaP3, zSemaforo, zPanelP1, zPanel2, zPanel3);
-            SO.revisarColas(zColaP1, zColaP2, zColaP3, zColaP2, zSemaforo, zPanelP1, zPanel2, zPanel3);
-            SO.revisarColas(stColaP1, stColaP2, stColaP3, stColaP2, stSemaforo, stPanel1, stPanel2, stPanel3);
-            SO.revisarColas(stColaP1, stColaP2, stColaP3, stColaP3, stSemaforo, stPanel1, stPanel2, stPanel3);
-            
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            SO.revisarColas(zColaP1, zColaP2, zColaP3, zColaP3, zSemaforo, zPanelP1, zPanel2, zPanel3);
+//            SO.revisarColas(zColaP1, zColaP2, zColaP3, zColaP2, zSemaforo, zPanelP1, zPanel2, zPanel3);
+//            SO.revisarColas(stColaP1, stColaP2, stColaP3, stColaP2, stSemaforo, stPanel1, stPanel2, stPanel3);
+//            SO.revisarColas(stColaP1, stColaP2, stColaP3, stColaP3, stSemaforo, stPanel1, stPanel2, stPanel3);
+//            
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_jButton3ActionPerformed
         /**
      * @return the poolZelda

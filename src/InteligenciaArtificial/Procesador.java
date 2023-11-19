@@ -8,6 +8,7 @@ import static java.lang.Math.random;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,6 +25,7 @@ public class Procesador extends Thread {
     Personaje winner;
     private String ganador;
     int  aviso=0;
+    int aviso2=0;
     String logBattle="";
     public Procesador(){
         this.estado="Esperando";
@@ -36,11 +38,12 @@ public class Procesador extends Thread {
         while(true){
             if(turno==true){
                 try {
+                    logBattle+="---------------------------------------------\n";
                     this.setEstado("Decidiendo");
                     Pantalla.estadoIA.setText(estado);
                     this.insertarPeleadores();
                     this.eleccion();
-                    sleep(10000);
+                    sleep(Pantalla.velocidad.getValue());
                     this.setEstado("Decidienco resultado");
                     
                     if(aviso==0){
@@ -48,7 +51,13 @@ public class Procesador extends Thread {
                     }else{
                         Pantalla.labelCreation(winner, Pantalla.ganadores);
                     }
-                    
+                    if(aviso2!=0){
+                        Pantalla.getzRefuerzo().encolar(this.zFigther);            
+                        Pantalla.labelCreation(zFigther, Pantalla.zPanel4);
+                        Pantalla.getStRefuerzo().encolar(this.stFigther);            
+                        Pantalla.labelCreation(stFigther, Pantalla.stPanel4);
+                        this.aviso2=0;
+                    }
                     Pantalla.contVictoriasZ.setText(Integer.toString(Pantalla.zWins));
                     Pantalla.contVictoriasSt.setText(Integer.toString(Pantalla.stWins));
                     Pantalla.logBatalla.setText(logBattle);
@@ -90,6 +99,7 @@ public class Procesador extends Thread {
             aviso=0;
         }else if (posibilidad<=3.3){
             //No combate
+            System.out.println("Hola");
             this.noCombate();
             this.setResultado("No Combate");
             aviso=0;
@@ -263,10 +273,8 @@ public class Procesador extends Thread {
         System.out.println("No combate");
          try{
              logBattle+="No combate\n";
-            Pantalla.getzRefuerzo().encolar(this.zFigther);            
-            Pantalla.labelCreation(zFigther, Pantalla.zPanel4);
-            Pantalla.getStRefuerzo().encolar(this.stFigther);            
-            Pantalla.labelCreation(stFigther, Pantalla.stPanel4);
+             this.aviso2=1;
+
             this.setResultado("Peleadores muy debiles para pelear");
         }catch(Exception err){
             
