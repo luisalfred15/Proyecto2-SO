@@ -101,7 +101,7 @@ public class Procesador extends Thread {
             //No combate
             System.out.println("Hola");
             this.noCombate();
-            this.setResultado("No Combate");
+//            this.setResultado("No Combate");
             aviso=0;
         }else {
             //Combate

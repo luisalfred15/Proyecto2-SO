@@ -48,7 +48,7 @@ public class SistemaOperativo extends Thread {
         while (true){
             if(this.isTurno()==true){
                 try {
-                    this.cicloCont+=1;
+                    
                     if(Pantalla.contador>=8){
                         this.agregarRefuerzo(Pantalla.getzColaP1(),Pantalla.getzColaP2(),Pantalla.getzColaP3(),Pantalla.getzRefuerzo(),Pantalla.zPanelP1,Pantalla.zPanel2,Pantalla.zPanel3,Pantalla.zPanel4);
                         this.agregarRefuerzo(Pantalla.getStColaP1(),Pantalla.getStColaP2(),Pantalla.getStColaP3(),Pantalla.getStRefuerzo(),Pantalla.stPanel1,Pantalla.stPanel2,Pantalla.stPanel3,Pantalla.stPanel4);
@@ -56,14 +56,14 @@ public class SistemaOperativo extends Thread {
                     }
                     if(cicloCont>=2){
                            Random r = new Random();
-                            int decision = r.nextInt(101);
-                            if (decision >= 20) {
+                            int decision = r.nextInt(11);
+                            if (decision >= 2) {
                             this.zIds+=1;
                             this.stIds+=1;
-                            this.agregarPersonaje(Pantalla.getPoolZelda(), Pantalla.getzColaP1(), Pantalla.getzColaP2(), Pantalla.getzColaP3(), Pantalla.zPanelP1, Pantalla.zPanel2, Pantalla.zPanel3,this.zIds);
-                            this.agregarPersonaje(Pantalla.getPoolStreet(), Pantalla.getStColaP1(), Pantalla.getStColaP2(), Pantalla.getStColaP3(), Pantalla.stPanel1, Pantalla.stPanel2, Pantalla.stPanel3, this.stIds);
-                }
+                            this.agregarPersonaje(Pantalla.getPoolZelda(), Pantalla.getzColaP1(), Pantalla.getzColaP2(), Pantalla.getzColaP3(), Pantalla.zPanelP1, Pantalla.zPanel2, Pantalla.zPanel3,this.zIds, "z");
+                            this.agregarPersonaje(Pantalla.getPoolStreet(), Pantalla.getStColaP1(), Pantalla.getStColaP2(), Pantalla.getStColaP3(), Pantalla.stPanel1, Pantalla.stPanel2, Pantalla.stPanel3, this.stIds, "st");
                             this.cicloCont=0;
+                }
                                 
                     
               
@@ -81,6 +81,7 @@ public class SistemaOperativo extends Thread {
                     Pantalla.stFigther=figtherST;
                     this.setTurno(false);
                     Pantalla.IA.setTurno(true);
+                    this.cicloCont+=1;
                 } catch (InterruptedException ex) {
                     Logger.getLogger(SistemaOperativo.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -176,13 +177,13 @@ public class SistemaOperativo extends Thread {
     
 
     //Agregar personajes cada dos ciclos de revision
-    public void agregarPersonaje(Personaje[] pool, Cola P1, Cola P2, Cola P3, JPanel P1UI, JPanel P2UI, JPanel P3UI, int zId) throws InterruptedException {
+    public void agregarPersonaje(Personaje[] pool, Cola P1, Cola P2, Cola P3, JPanel P1UI, JPanel P2UI, JPanel P3UI, int zId, String l) throws InterruptedException {
         Random r = new Random();
         int posicion = r.nextInt(10);
 
         Personaje elegido = pool[posicion];
         elegido.determinarTipo();
-        elegido.setId("z"+Integer.toString(zId));
+        elegido.setId(l+Integer.toString(zId));
         if (elegido.getTipo() == 3) {
             P3.encolar(elegido);
             Pantalla.labelCreation(elegido, P3UI);
