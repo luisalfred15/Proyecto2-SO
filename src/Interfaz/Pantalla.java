@@ -34,7 +34,7 @@ import static javax.swing.SwingConstants.TOP;
  */
 public class Pantalla extends javax.swing.JFrame {
 
-
+    //Desde aqui
 
     private static Personaje[] poolZelda = new Personaje[10];
     private static Personaje[] poolStreet = new Personaje[10];
@@ -65,14 +65,14 @@ public class Pantalla extends javax.swing.JFrame {
     public static int stWins=0;
     
     public static int contador=0;
-    
+    //hasta aqui ricardo
     
     
     /**
      * Creates new form Pantalla
      */
     public Pantalla() throws IOException {
-      
+        //Dese aqui
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         this.setResizable(false);
@@ -148,6 +148,7 @@ public class Pantalla extends javax.swing.JFrame {
         this.SO.setTurno(true);
         SO.start();
         IA.start();
+        //Hasta aqui
     }
 
     /**
@@ -454,9 +455,11 @@ public class Pantalla extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void velocidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_velocidadStateChanged
+        //Desde aqui
         velocidadPelea = velocidad.getValue();
 //        this.tiempo.setText(Integer.toString(velocidadPelea));
         System.out.println(velocidadPelea);
+        //Hasta aqui
     }//GEN-LAST:event_velocidadStateChanged
     //LLena las colas al inicio de la simulacion
     public void llenarColas(){
@@ -521,7 +524,7 @@ public class Pantalla extends javax.swing.JFrame {
         info3.setText(Integer.toString(p.getPropiedades().getHabilidades()));
         info4.setText(Integer.toString(p.getPropiedades().getAgilidad()));
     }
-    
+    //Botones invisibles
     //Aquie en adelante son botones para probar como se ven las colas, como se actualizan y esas cosas
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
