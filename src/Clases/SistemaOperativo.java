@@ -75,6 +75,8 @@ public class SistemaOperativo extends Thread {
                     Logger.getLogger(SistemaOperativo.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
+            }else{
+                System.out.println("Batallando");
             }
         }
     }
