@@ -342,9 +342,9 @@ public class Pantalla extends javax.swing.JFrame {
         jPanel1.add(bar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 240, -1, 30));
 
         velocidad.setMajorTickSpacing(1000);
+        velocidad.setMinimum(1);
         velocidad.setMinorTickSpacing(10);
         velocidad.setPaintTicks(true);
-        velocidad.setValue(50);
         velocidad.setOpaque(false);
         velocidad.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -377,8 +377,8 @@ public class Pantalla extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("0");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 790, 40, -1));
+        jLabel4.setText("x0.01");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 790, 50, -1));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
@@ -479,8 +479,7 @@ public class Pantalla extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void velocidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_velocidadStateChanged
-        velocidadPelea = velocidad.getValue();
-        System.out.println(velocidadPelea);
+        
     }//GEN-LAST:event_velocidadStateChanged
     //LLena las colas al inicio de la simulacion
     public void llenarColas() {
