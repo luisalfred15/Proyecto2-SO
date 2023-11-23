@@ -41,8 +41,6 @@ public class Procesador extends Thread {
                     Pantalla.estadoIA.setText(getEstado());
                     this.insertarPeleadores();
                     this.eleccion();
-                    while (Pantalla.velocidad.getValue() == 0) {
-                    }
                     sleep(100000 / Pantalla.velocidad.getValue());
                     this.setEstado("Decidiendo resultado");
 
