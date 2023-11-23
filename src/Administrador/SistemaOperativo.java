@@ -4,6 +4,7 @@ package Administrador;
 
 import Clases.Cola;
 import Clases.Personaje;
+import Clases.Propiedades;
 import Interfaz.Pantalla;
 import static Interfaz.Pantalla.stPanel1;
 import static Interfaz.Pantalla.stPanel2;
@@ -56,8 +57,8 @@ public class SistemaOperativo extends Thread {
                     }
                     if(cicloCont>=2){
                            Random r = new Random();
-                            int decision = r.nextInt(11);
-                            if (decision >= 2) {
+                            int decision = r.nextInt(10);
+                            if (decision >= 1) {
                             this.zIds+=1;
                             this.stIds+=1;
                             this.agregarPersonaje(Pantalla.getPoolZelda(), Pantalla.getzColaP1(), Pantalla.getzColaP2(), Pantalla.getzColaP3(), Pantalla.zPanelP1, Pantalla.zPanel2, Pantalla.zPanel3,this.zIds, "z");
@@ -83,6 +84,8 @@ public class SistemaOperativo extends Thread {
                     Pantalla.IA.setTurno(true);
                     this.cicloCont+=1;
                 } catch (InterruptedException ex) {
+                    Logger.getLogger(SistemaOperativo.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
                     Logger.getLogger(SistemaOperativo.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
@@ -177,22 +180,23 @@ public class SistemaOperativo extends Thread {
     
 
     //Agregar personajes cada dos ciclos de revision
-    public void agregarPersonaje(Personaje[] pool, Cola P1, Cola P2, Cola P3, JPanel P1UI, JPanel P2UI, JPanel P3UI, int zId, String l) throws InterruptedException {
+    public void agregarPersonaje(Personaje[] pool, Cola P1, Cola P2, Cola P3, JPanel P1UI, JPanel P2UI, JPanel P3UI, int zId, String l) throws InterruptedException, IOException {
         Random r = new Random();
         int posicion = r.nextInt(10);
-
+        Propiedades props = new Propiedades(r.nextInt(11), r.nextInt(11),r.nextInt(11),r.nextInt(zId));
         Personaje elegido = pool[posicion];
-        elegido.determinarTipo();
-        elegido.setId(l+Integer.toString(zId));
-        if (elegido.getTipo() == 3) {
-            P3.encolar(elegido);
-            Pantalla.labelCreation(elegido, P3UI);
-        } else if (elegido.getTipo() == 2) {
-            P2.encolar(elegido);
-            Pantalla.labelCreation(elegido, P2UI);
+        Personaje nuevo = new Personaje(l+Integer.toString(zId),elegido.getNombre(),props);
+        nuevo.determinarTipo();
+        
+        if (nuevo.getTipo() == 3) {
+            P3.encolar(nuevo);
+            Pantalla.labelCreation(nuevo, P3UI);
+        } else if (nuevo.getTipo() == 2) {
+            P2.encolar(nuevo);
+            Pantalla.labelCreation(nuevo, P2UI);
         } else {
-            P1.encolar(elegido);
-            Pantalla.labelCreation(elegido, P1UI);
+            P1.encolar(nuevo);
+            Pantalla.labelCreation(nuevo, P1UI);
         }
 
     } 

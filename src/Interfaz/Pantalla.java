@@ -216,7 +216,6 @@ public class Pantalla extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setAlwaysOnTop(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -281,8 +280,13 @@ public class Pantalla extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane9, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 0, 500, 100));
 
+        jScrollPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jScrollPane1.setVerifyInputWhenFocusTarget(false);
+
         zPanelP1.setBackground(new java.awt.Color(0, 0, 0));
         zPanelP1.setForeground(new java.awt.Color(0, 0, 0));
+        zPanelP1.setAutoscrolls(true);
+        zPanelP1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         zPanelP1.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
         jScrollPane1.setViewportView(zPanelP1);
 
@@ -363,6 +367,7 @@ public class Pantalla extends javax.swing.JFrame {
         jPanel1.add(resultado, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 470, 180, 170));
 
         logBatalla.setColumns(20);
+        logBatalla.setLineWrap(true);
         logBatalla.setRows(5);
         jScrollPane10.setViewportView(logBatalla);
 
@@ -516,7 +521,12 @@ public class Pantalla extends javax.swing.JFrame {
         l.setText(p.getNombre());
         l.setIcon(icon);
         l.repaint();
-        info1.setText(Integer.toString(p.getPropiedades().getPuntosVida()));
+        
+        int vida=p.getPropiedades().getPuntosVida();
+        if(vida<0){
+            vida=vida*-1;
+        }
+        info1.setText(Integer.toString(vida));
         info2.setText(Integer.toString(p.getPropiedades().getFuerza()));
         info3.setText(Integer.toString(p.getPropiedades().getHabilidades()));
         info4.setText(Integer.toString(p.getPropiedades().getAgilidad()));
