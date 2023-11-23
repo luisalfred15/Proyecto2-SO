@@ -9,9 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -74,30 +71,24 @@ public class Personaje {
         if (randHabilidades > 40) {
             // Si se selecciona que es de calidad, se deja el valor
             contadorCalidad++;
-            
         } else {
-            // Si no, se multiplica por -1 el valor de la variable transitoria
-            //props.setHabilidades(props.getHabilidades() * -1);
+            
         }
-        System.out.println(contadorCalidad);
         if (randVida > 30) {
             contadorCalidad++;
         } else {
-            //props.setPuntosVida(props.getPuntosVida() * -1);
+            
         }
-        System.out.println(contadorCalidad);
         if (randFuerza > 50) {
             contadorCalidad++;
         } else {
-            //props.setFuerza(props.getFuerza() * -1);
+            
         }
-        System.out.println(contadorCalidad);
         if (randAgilidad > 60) {
             contadorCalidad++;
         } else {
-            //props.setAgilidad(props.getAgilidad() * -1);
+            
         }
-        System.out.println(contadorCalidad);
         if (contadorCalidad >= 3) {
             this.setTipo(1);
         } else if (contadorCalidad == 2){
@@ -105,42 +96,6 @@ public class Personaje {
         } else {
             this.setTipo(3);
         }
-    }
-    
-    public void imprimirInfo() {
-        System.out.println("Propiedades de " + this.getNombre());
-        
-        Propiedades p = this.getPropiedades();
-        
-        System.out.println("Habs: " + p.getHabilidades());
-        if (p.getHabilidades() > 40) {
-            System.out.println("Calidad Habs: Si");
-        } else {
-            System.out.println("Calidad Habs: No");
-        }
-        
-        System.out.println("HP: " + p.getPuntosVida());
-        if (p.getPuntosVida() > 30) {
-            System.out.println("Calidad HP: Si");
-        } else {
-            System.out.println("Calidad HP: No");
-        }
-        
-        System.out.println("Fuerza: " + p.getFuerza());
-        if (p.getFuerza() > 50) {
-            System.out.println("Calidad Fuerza: Si");
-        } else {
-            System.out.println("Calidad Fuerza: No");
-        }
-        
-        System.out.println("Agilidad: " + p.getAgilidad());
-        if (p.getAgilidad() > 60) {
-            System.out.println("Calidad Agilidad: Si");
-        } else {
-            System.out.println("Calidad Agilidad: No");
-        }
-        
-        System.out.println("Prioridad de " + this.getNombre() + " es " + this.getTipo() + "\n");
     }
 
     /**

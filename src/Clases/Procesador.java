@@ -1,5 +1,5 @@
 
-package InteligenciaArtificial;
+package Clases;
 
 import Clases.Personaje;
 import Interfaz.Pantalla;
@@ -22,11 +22,11 @@ public class Procesador extends Thread {
     private boolean turno;
     private int velocidad;
     private String resultado;
-    Personaje winner;
+    private Personaje winner;
     private String ganador;
-    int  aviso=0;
-    int aviso2=0;
-    String logBattle="";
+    private int  aviso=0;
+    private int aviso2=0;
+    private String logBattle="";
     public Procesador(){
         this.estado="Esperando";
         this.turno=false;
@@ -36,35 +36,35 @@ public class Procesador extends Thread {
     @Override
     public void run(){
         while(true){
-            if(turno==true){
+            if(isTurno()==true){
                 try {
-                    logBattle+="---------------------------------------------\n";
+                    setLogBattle(getLogBattle() + "---------------------------------------------\n");
                     this.setEstado("Decidiendo");
-                    Pantalla.estadoIA.setText(estado);
+                    Pantalla.estadoIA.setText(getEstado());
                     this.insertarPeleadores();
                     this.eleccion();
                     sleep(Pantalla.velocidad.getValue());
-                    this.setEstado("Decidienco resultado");
+                    this.setEstado("Decidiendo resultado");
                     
-                    if(aviso==0){
+                    if(getAviso()==0){
                         
                     }else{
-                        Pantalla.labelCreation(winner, Pantalla.ganadores);
+                        Pantalla.labelCreation(getWinner(), Pantalla.ganadores);
                     }
-                    if(aviso2!=0){
-                        Pantalla.getzRefuerzo().encolar(this.zFigther);            
-                        Pantalla.labelCreation(zFigther, Pantalla.zPanel4);
-                        Pantalla.getStRefuerzo().encolar(this.stFigther);            
-                        Pantalla.labelCreation(stFigther, Pantalla.stPanel4);
-                        this.aviso2=0;
+                    if(getAviso2()!=0){
+                        Pantalla.getzRefuerzo().encolar(this.getzFigther());            
+                        Pantalla.labelCreation(getzFigther(), Pantalla.zPanel4);
+                        Pantalla.getStRefuerzo().encolar(this.getStFigther());            
+                        Pantalla.labelCreation(getStFigther(), Pantalla.stPanel4);
+                        this.setAviso2(0);
                     }
                     Pantalla.contVictoriasZ.setText(Integer.toString(Pantalla.zWins));
                     Pantalla.contVictoriasSt.setText(Integer.toString(Pantalla.stWins));
-                    Pantalla.logBatalla.setText(logBattle);
-                    Pantalla.estadoIA.setText(estado);
-                    Pantalla.resultado.setText(resultado);
+                    Pantalla.logBatalla.setText(getLogBattle());
+                    Pantalla.estadoIA.setText(getEstado());
+                    Pantalla.resultado.setText(getResultado());
                     Pantalla.SO.setTurno(true);
-                    this.turno=false;
+                    this.setTurno(false);
                     
                     
                 } catch (InterruptedException ex) {
@@ -72,7 +72,7 @@ public class Procesador extends Thread {
                 }
             }else{
                 this.setEstado("Esperando");
-                Pantalla.estadoIA.setText(estado);
+                Pantalla.estadoIA.setText(getEstado());
             }
         }
     }
@@ -95,85 +95,76 @@ public class Procesador extends Thread {
         if(posibilidad<=2.7){
             //Empate
             this.empate();
-            this.setResultado("Empate");
-            aviso=0;
+            setAviso(0);
         }else if (posibilidad<=3.3){
             //No combate
-            System.out.println("Hola");
             this.noCombate();
 //            this.setResultado("No Combate");
-            aviso=0;
+            setAviso(0);
         }else {
             //Combate
-            winner=this.combate();
-            this.setResultado(ganador);
-            aviso=1;
+            setWinner(this.combate());
+            this.setResultado(getGanador());
+            setAviso(1);
         }
-        Pantalla.contador+=1;
-        Pantalla.cont1.setText(Integer.toString(Pantalla.contador));
     }
     public Personaje combate(){
-        this.zFigther.imprimirInfo();
-        this.stFigther.imprimirInfo();
         
         try {
             boolean par=true;
-            logBattle+="Inicia la batalla\n";
+            setLogBattle(getLogBattle() + "Inicia la batalla\n");
             while (par==true){
                 
                 this.imprimirVida();
                 System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,,>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                System.out.println("Turno: "+zFigther.getNombre());
-                logBattle+="Turno: "+zFigther.getNombre()+"\n";
-                this.defensa(zFigther, stFigther);
+                System.out.println("Turno: "+getzFigther().getNombre());
+                setLogBattle(getLogBattle() + "Turno: " + getzFigther().getNombre() + "\n");
+                this.defensa(getzFigther(), getStFigther());
                 this.actualizarBarra();
-                if(stFigther.getPropiedades().getPuntosVida()<=0){
-                    System.out.println( "Perdedor: "+stFigther.getNombre());
-                    System.out.println( "Ganador: " +zFigther.getNombre());
-                    logBattle+="Perdedor: "+stFigther.getNombre()+"\n"+"Ganador: " +zFigther.getNombre()+"\n";
+                if(getStFigther().getPropiedades().getPuntosVida()<=0){
+                    System.out.println("Perdedor: "+getStFigther().getNombre());
+                    System.out.println("Ganador: " +getzFigther().getNombre());
+                    setLogBattle(getLogBattle() + "Perdedor: " + getStFigther().getNombre() + "\n" + "Ganador: " + getzFigther().getNombre() + "\n");
                     Pantalla.zWins+=1;
-                    this.setGanador(this.zFigther.getNombre());
+                    this.setGanador(this.getzFigther().getNombre());
                     this.imprimirVida();
-//                    Pantalla.labelCreation(zFigther, Pantalla.ganadores);
-                    return zFigther;
-//                    break;
-                } else if(zFigther.getPropiedades().getPuntosVida()<=0){
-                    System.out.println( "Perdedor: "+zFigther.getNombre());
-                    System.out.println( "Ganador: " +stFigther.getNombre());
+                    return getzFigther();
+                } else if(getzFigther().getPropiedades().getPuntosVida()<=0){
+                    System.out.println("Perdedor: "+getzFigther().getNombre());
+                    System.out.println("Ganador: " +getStFigther().getNombre());
                     Pantalla.stWins+=1;
-                    logBattle+="Perdedor: "+zFigther.getNombre()+"\n"+"Ganador: " +stFigther.getNombre()+"\n";
-                    this.setGanador(this.stFigther.getNombre());
+                    setLogBattle(getLogBattle() + "Perdedor: " + getzFigther().getNombre() + "\n" + "Ganador: " + getStFigther().getNombre() + "\n");
+                    this.setGanador(this.getStFigther().getNombre());
                     this.imprimirVida();
-//                    Pantalla.labelCreation(stFigther, Pantalla.ganadores);
-                    return stFigther;
+                    return getStFigther();
 //                    break;
                 }
                 
                 
                 this.imprimirVida();
-                System.out.println("Turno: "+stFigther.getNombre());
+                System.out.println("Turno: "+getStFigther().getNombre());
                 
-                this.defensa(stFigther, zFigther);
+                this.defensa(getStFigther(), getzFigther());
                 this.actualizarBarra();
-                if(zFigther.getPropiedades().getPuntosVida()<=0){
-                    System.out.println( "Perdedor: "+zFigther.getNombre());
-                    System.out.println( "Ganador: " +stFigther.getNombre());
-                    logBattle+="Perdedor: "+zFigther.getNombre()+"\n"+"Ganador: " +stFigther.getNombre()+"\n";
+                if(getzFigther().getPropiedades().getPuntosVida()<=0){
+                    System.out.println("Perdedor: "+getzFigther().getNombre());
+                    System.out.println("Ganador: " +getStFigther().getNombre());
+                    setLogBattle(getLogBattle() + "Perdedor: " + getzFigther().getNombre() + "\n" + "Ganador: " + getStFigther().getNombre() + "\n");
                     Pantalla.stWins+=1;
-                    this.setGanador(this.stFigther.getNombre());
+                    this.setGanador(this.getStFigther().getNombre());
                     this.imprimirVida();
 //                    Pantalla.labelCreation(stFigther, Pantalla.ganadores);
-                    return stFigther;
+                    return getStFigther();
 //                    break;
-                } else if(stFigther.getPropiedades().getPuntosVida()<=0){
-                    System.out.println( "Perdedor: "+stFigther.getNombre());
-                    System.out.println( "Ganador: " +zFigther.getNombre());
+                } else if(getStFigther().getPropiedades().getPuntosVida()<=0){
+                    System.out.println("Perdedor: "+getStFigther().getNombre());
+                    System.out.println("Ganador: " +getzFigther().getNombre());
                     Pantalla.zWins+=1;
-                    logBattle+="Perdedor: "+stFigther.getNombre()+"\n"+"Ganador: " +zFigther.getNombre()+"\n";
-                    this.setGanador(this.zFigther.getNombre());
+                    setLogBattle(getLogBattle() + "Perdedor: " + getStFigther().getNombre() + "\n" + "Ganador: " + getzFigther().getNombre() + "\n");
+                    this.setGanador(this.getzFigther().getNombre());
 //                    Pantalla.labelCreation(zFigther, Pantalla.ganadores);
                    this.imprimirVida();
-                    return zFigther;
+                    return getzFigther();
 //                    break;
                 }
                  this.imprimirVida();
@@ -185,12 +176,12 @@ public class Procesador extends Thread {
         return null;
     }
     public void imprimirVida(){
-        System.out.println("Vida: " + zFigther.getNombre()+" " +zFigther.getPropiedades().getPuntosVida());
-        System.out.println("Vida: " + stFigther.getNombre()+" " +stFigther.getPropiedades().getPuntosVida());
+        System.out.println("Vida: " + getzFigther().getNombre()+" " +getzFigther().getPropiedades().getPuntosVida());
+        System.out.println("Vida: " + getStFigther().getNombre()+" " +getStFigther().getPropiedades().getPuntosVida());
     }
     public void actualizarBarra(){
-        Pantalla.bar1.setValue(this.zFigther.getPropiedades().getPuntosVida());
-        Pantalla.bar2.setValue(this.stFigther.getPropiedades().getPuntosVida());
+        Pantalla.bar1.setValue(this.getzFigther().getPropiedades().getPuntosVida());
+        Pantalla.bar2.setValue(this.getStFigther().getPropiedades().getPuntosVida());
     }
     public void defensa(Personaje atacante,  Personaje defensor){
         
@@ -214,8 +205,7 @@ public class Procesador extends Thread {
             
                 //Ataque 1 De Zfighter a stFighter
                 if(r==0){
-                    System.out.println( atacante.getNombre()+" dio un " +" golpe directo");
-                    logBattle+= atacante.getNombre()+" dio un " +" golpe directo"+"\n";
+                    setLogBattle(getLogBattle() + atacante.getNombre()+" dio un " +" golpe directo"+"\n");
                     defensor.getPropiedades().setPuntosVida(defensor.getPropiedades().getPuntosVida()-zFuerza);
                     
                 }else if(r==1){
@@ -223,30 +213,25 @@ public class Procesador extends Thread {
                     int randAg= rand.nextInt(101);
                     if(randAg>stAgi){
                         //Golpe directo
-                        System.out.println(atacante.getNombre()+" dio un " +" golpe directo");
-                        logBattle+= atacante.getNombre()+" dio un " +" golpe directo"+"\n";
+                        setLogBattle(getLogBattle() + atacante.getNombre()+" dio un " +" golpe directo"+"\n");
                         defensor.getPropiedades().setPuntosVida(defensor.getPropiedades().getPuntosVida()-zFuerza);
                     }else if(randAg==stAgi){
                         //Bloquea el golpe 
-                        System.out.println(defensor.getNombre()+" bloqueo el ataque" );
-                        logBattle+=defensor.getNombre()+" bloqueo el ataque"+"\n";
+                        setLogBattle(getLogBattle() + defensor.getNombre()+" bloqueo el ataque"+"\n");
                         stHP= stHP-5;
                         zHP= zHP-10;
                     }else{
                         //Esquivo con exito
-                        System.out.println( defensor.getNombre() + " Esquivo el ataque de " +atacante.getNombre());
-                        logBattle+=defensor.getNombre() + " Esquivo el ataque de " +atacante.getNombre()+"\n";
+                        setLogBattle(getLogBattle() + defensor.getNombre() + " Esquivo el ataque de " +atacante.getNombre()+"\n");
                     }
                 }else{
                     //Habilidad. Compara el valor de habilidad con un random, si el random es mayor que el valor de habilidad recibe un golpe directo
                     int randHab= rand.nextInt(101);
                     if (randHab>stHab ){
-                        System.out.println(atacante.getNombre()+" dio un " +" golpe directo");
-                        logBattle+=atacante.getNombre()+" dio un " +" golpe directo\n";
+                        setLogBattle(getLogBattle() + atacante.getNombre()+" dio un " +" golpe directo\n");
                         defensor.getPropiedades().setPuntosVida(defensor.getPropiedades().getPuntosVida()-zFuerza);
                     }else if(randHab<=stHab){
-                        System.out.println(defensor.getNombre() + " Devolvio el ataque de " + atacante.getNombre());
-                        logBattle+=defensor.getNombre() + " Devolvio el ataque de " + atacante.getNombre()+ "\n";
+                        setLogBattle(getLogBattle() + defensor.getNombre() + " Devolvio el ataque de " + atacante.getNombre()+ "\n");
                         atacante.getPropiedades().setPuntosVida( atacante.getPropiedades().getPuntosVida()-zFuerza);
                     }
                 }
@@ -256,13 +241,12 @@ public class Procesador extends Thread {
         }
     }
     public void empate(){
-        System.out.println("Empate");
          try{
-             logBattle+="Empate\n";
-            Pantalla.getzColaP1().encolar(this.zFigther);            
-            Pantalla.labelCreation(zFigther, Pantalla.zPanelP1);
-            Pantalla.getStColaP1().encolar(this.stFigther);            
-            Pantalla.labelCreation(stFigther, Pantalla.stPanel1);
+             setLogBattle(getLogBattle() + "Empate\n");
+            Pantalla.getzColaP1().encolar(this.getzFigther());            
+            Pantalla.labelCreation(getzFigther(), Pantalla.zPanelP1);
+            Pantalla.getStColaP1().encolar(this.getStFigther());            
+            Pantalla.labelCreation(getStFigther(), Pantalla.stPanel1);
             this.setResultado("Empate");
         }catch(Exception err){
             
@@ -270,10 +254,9 @@ public class Procesador extends Thread {
     }
     
     public void noCombate(){
-        System.out.println("No combate");
          try{
-             logBattle+="No combate\n";
-             this.aviso2=1;
+             setLogBattle(getLogBattle() + "No combate\n");
+             this.setAviso2(1);
 
             this.setResultado("Peleadores muy debiles para pelear");
         }catch(Exception err){
@@ -377,5 +360,61 @@ public class Procesador extends Thread {
      */
     public void setGanador(String ganador) {
         this.ganador = ganador;
+    }
+
+    /**
+     * @return the winner
+     */
+    public Personaje getWinner() {
+        return winner;
+    }
+
+    /**
+     * @param winner the winner to set
+     */
+    public void setWinner(Personaje winner) {
+        this.winner = winner;
+    }
+
+    /**
+     * @return the aviso
+     */
+    public int getAviso() {
+        return aviso;
+    }
+
+    /**
+     * @param aviso the aviso to set
+     */
+    public void setAviso(int aviso) {
+        this.aviso = aviso;
+    }
+
+    /**
+     * @return the aviso2
+     */
+    public int getAviso2() {
+        return aviso2;
+    }
+
+    /**
+     * @param aviso2 the aviso2 to set
+     */
+    public void setAviso2(int aviso2) {
+        this.aviso2 = aviso2;
+    }
+
+    /**
+     * @return the logBattle
+     */
+    public String getLogBattle() {
+        return logBattle;
+    }
+
+    /**
+     * @param logBattle the logBattle to set
+     */
+    public void setLogBattle(String logBattle) {
+        this.logBattle = logBattle;
     }
 }

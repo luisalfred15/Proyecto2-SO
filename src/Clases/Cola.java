@@ -49,7 +49,6 @@ public class Cola {
             System.out.println("La cola esta vacia.");
         } else if (this.longitud == 1) {
             this.vaciar();
-//            this.longitud--;
         }else {
             this.nodoCabeza = this.nodoCabeza.getNodoSiguiente();
             this.longitud--;
@@ -72,19 +71,6 @@ public class Cola {
         return aux;
     }
     
-    public String imprimirCola() {
-        if (!this.esVacia()) {
-            String impresion = "";
-            for (int i = 0; i < this.longitud; i++) {
-                Nodo nodoActual = this.nodoCabeza;
-                desencolar();
-                impresion += nodoActual.getDatos().getNombre() + ", ";
-                encolar(nodoActual.getDatos());
-            }
-            return impresion;
-        }
-        return "Vacia";
-    }
     public void actualizarPersonajesCont(){
         if (!this.esVacia()) {
             String impresion = "";
@@ -96,22 +82,11 @@ public class Cola {
                 desencolar();
                 impresion += nodoActual.getDatos().getNombre() + ", ";
                 encolar(nodoActual.getDatos());
-                System.out.println("hola");
             }
             
         }
     }
     
-    public String imprimirRecur(String impresion) {
-        if (!this.esVacia()) {
-            Nodo nodoAux = this.nodoCabeza;
-            desencolar();
-            impresion = imprimirRecur(impresion); 
-            encolar(nodoAux.getDatos());
-        }
-        return impresion;
-    }
-
     /**
      * @return the nodoCabeza
      */
