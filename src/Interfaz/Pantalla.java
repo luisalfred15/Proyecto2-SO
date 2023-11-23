@@ -199,7 +199,6 @@ public class Pantalla extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setAlwaysOnTop(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -264,8 +263,13 @@ public class Pantalla extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane9, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 0, 500, 100));
 
+        jScrollPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jScrollPane1.setVerifyInputWhenFocusTarget(false);
+
         zPanelP1.setBackground(new java.awt.Color(0, 0, 0));
         zPanelP1.setForeground(new java.awt.Color(0, 0, 0));
+        zPanelP1.setAutoscrolls(true);
+        zPanelP1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         zPanelP1.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
         jScrollPane1.setViewportView(zPanelP1);
 
@@ -335,9 +339,11 @@ public class Pantalla extends javax.swing.JFrame {
         label8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel1.add(label8, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 600, 60, 30));
 
+        bar1.setForeground(new java.awt.Color(51, 255, 0));
         bar1.setValue(50);
         jPanel1.add(bar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 240, -1, 30));
 
+        bar2.setForeground(new java.awt.Color(204, 102, 0));
         bar2.setValue(50);
         jPanel1.add(bar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 240, -1, 30));
 
@@ -359,6 +365,7 @@ public class Pantalla extends javax.swing.JFrame {
         jPanel1.add(resultado, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 510, 180, 110));
 
         logBatalla.setColumns(20);
+        logBatalla.setLineWrap(true);
         logBatalla.setRows(5);
         jScrollPane10.setViewportView(logBatalla);
 
@@ -539,7 +546,12 @@ public class Pantalla extends javax.swing.JFrame {
         l.setText(p.getNombre());
         l.setIcon(icon);
         l.repaint();
-        info1.setText(Integer.toString(p.getPropiedades().getPuntosVida()));
+        
+        int vida=p.getPropiedades().getPuntosVida();
+        if(vida<0){
+            vida=vida*-1;
+        }
+        info1.setText(Integer.toString(vida));
         info2.setText(Integer.toString(p.getPropiedades().getFuerza()));
         info3.setText(Integer.toString(p.getPropiedades().getHabilidades()));
         info4.setText(Integer.toString(p.getPropiedades().getAgilidad()));
