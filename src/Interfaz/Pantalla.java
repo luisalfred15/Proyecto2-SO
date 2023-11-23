@@ -34,7 +34,7 @@ public class Pantalla extends javax.swing.JFrame {
     public static void labelCreation() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    int velocidadPelea;
+    public static int velocidadPelea;
     private static Cola zColaP1;
     private static Cola zColaP2;
     private static Cola zColaP3;
@@ -190,8 +190,6 @@ public class Pantalla extends javax.swing.JFrame {
         stInfo3 = new javax.swing.JLabel();
         stInfo4 = new javax.swing.JLabel();
         zInfo1 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         contVictoriasZ = new javax.swing.JLabel();
         contVictoriasSt = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -344,22 +342,21 @@ public class Pantalla extends javax.swing.JFrame {
         jPanel1.add(bar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 240, -1, 30));
 
         velocidad.setMajorTickSpacing(1000);
-        velocidad.setMaximum(10000);
-        velocidad.setMinimum(1000);
-        velocidad.setMinorTickSpacing(100);
+        velocidad.setMinorTickSpacing(10);
         velocidad.setPaintTicks(true);
-        velocidad.setValue(10000);
+        velocidad.setValue(50);
         velocidad.setOpaque(false);
         velocidad.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 velocidadStateChanged(evt);
             }
         });
-        jPanel1.add(velocidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 770, 450, 50));
+        jPanel1.add(velocidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 750, 450, 50));
 
         resultado.setForeground(new java.awt.Color(231, 225, 211));
         resultado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel1.add(resultado, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 470, 180, 170));
+        resultado.setAutoscrolls(true);
+        jPanel1.add(resultado, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 510, 180, 110));
 
         logBatalla.setColumns(20);
         logBatalla.setRows(5);
@@ -375,18 +372,18 @@ public class Pantalla extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel2.setText("10");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 810, 30, -1));
+        jLabel2.setText("x2");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 790, 30, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("1");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 810, 40, -1));
+        jLabel4.setText("0");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 790, 40, -1));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel5.setText("5");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 810, 40, -1));
+        jLabel5.setText("x1");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 790, 40, -1));
 
         zInfo2.setBackground(new java.awt.Color(231, 225, 211));
         zInfo2.setFont(new java.awt.Font("Impact", 2, 24)); // NOI18N
@@ -440,30 +437,18 @@ public class Pantalla extends javax.swing.JFrame {
         zInfo1.setText("0");
         jPanel1.add(zInfo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 510, 50, 30));
 
-        jLabel1.setBackground(new java.awt.Color(231, 225, 211));
-        jLabel1.setFont(new java.awt.Font("Impact", 0, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("izquierda para aumentar la velocidad!");
-        jLabel1.setOpaque(true);
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 750, -1, -1));
-
-        jLabel6.setBackground(new java.awt.Color(35, 25, 24));
-        jLabel6.setFont(new java.awt.Font("Impact", 0, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("¡Mueve la barra lateral hacia la");
-        jLabel6.setOpaque(true);
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 750, -1, -1));
-
         contVictoriasZ.setBackground(new java.awt.Color(255, 255, 255));
         contVictoriasZ.setFont(new java.awt.Font("Impact", 2, 18)); // NOI18N
         contVictoriasZ.setForeground(new java.awt.Color(255, 255, 255));
+        contVictoriasZ.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         contVictoriasZ.setText("0");
-        jPanel1.add(contVictoriasZ, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 660, 20, 40));
+        jPanel1.add(contVictoriasZ, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 660, 70, 40));
 
         contVictoriasSt.setFont(new java.awt.Font("Impact", 2, 18)); // NOI18N
         contVictoriasSt.setForeground(new java.awt.Color(0, 0, 0));
+        contVictoriasSt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         contVictoriasSt.setText("0");
-        jPanel1.add(contVictoriasSt, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 660, 20, 40));
+        jPanel1.add(contVictoriasSt, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 660, 70, 40));
 
         jLabel7.setFont(new java.awt.Font("Impact", 2, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -495,6 +480,7 @@ public class Pantalla extends javax.swing.JFrame {
 
     private void velocidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_velocidadStateChanged
         velocidadPelea = velocidad.getValue();
+        System.out.println(velocidadPelea);
     }//GEN-LAST:event_velocidadStateChanged
     //LLena las colas al inicio de la simulacion
     public void llenarColas() {
@@ -748,12 +734,10 @@ public class Pantalla extends javax.swing.JFrame {
     public static javax.swing.JLabel contVictoriasZ;
     public static javax.swing.JLabel estadoIA;
     public static javax.swing.JPanel ganadores;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;

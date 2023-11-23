@@ -1,21 +1,18 @@
-
 package Clases;
 
 import Clases.Personaje;
 import Interfaz.Pantalla;
-import static java.lang.Math.random;
 
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  *
  * @author raco1
  */
 public class Procesador extends Thread {
-    
+
     private String estado; //Esperando, deciciendo, anunciando resultado
     private Personaje zFigther;
     private Personaje stFigther;
@@ -24,40 +21,45 @@ public class Procesador extends Thread {
     private String resultado;
     private Personaje winner;
     private String ganador;
-    private int  aviso=0;
-    private int aviso2=0;
-    private String logBattle="";
-    public Procesador(){
-        this.estado="Esperando";
-        this.turno=false;
-        
+    private int aviso = 0;
+    private int aviso2 = 0;
+    private String logBattle = "";
+
+    public Procesador() {
+        this.estado = "Esperando";
+        this.turno = false;
+
     }
-    
+
     @Override
-    public void run(){
-        while(true){
-            if(isTurno()==true){
+    public void run() {
+        while (true) {
+            if (isTurno() == true) {
                 try {
                     setLogBattle(getLogBattle() + "---------------------------------------------\n");
                     this.setEstado("Decidiendo");
                     Pantalla.estadoIA.setText(getEstado());
                     this.insertarPeleadores();
                     this.eleccion();
-                    sleep(Pantalla.velocidad.getValue());
+                    while (Pantalla.velocidad.getValue() == 0) {
+                    }
+                    sleep(100000 / Pantalla.velocidad.getValue());
                     this.setEstado("Decidiendo resultado");
-                    
-                    if(getAviso()==0){
-                        
-                    }else{
+
+                    if (getAviso() == 0) {
+
+                    } else {
                         Pantalla.labelCreation(getWinner(), Pantalla.ganadores);
                     }
-                    if(getAviso2()!=0){
-                        Pantalla.getzRefuerzo().encolar(this.getzFigther());            
+
+                    if (getAviso2() != 0) {
+                        Pantalla.getzRefuerzo().encolar(this.getzFigther());
                         Pantalla.labelCreation(getzFigther(), Pantalla.zPanel4);
-                        Pantalla.getStRefuerzo().encolar(this.getStFigther());            
+                        Pantalla.getStRefuerzo().encolar(this.getStFigther());
                         Pantalla.labelCreation(getStFigther(), Pantalla.stPanel4);
                         this.setAviso2(0);
                     }
+
                     Pantalla.contVictoriasZ.setText(Integer.toString(Pantalla.zWins));
                     Pantalla.contVictoriasSt.setText(Integer.toString(Pantalla.stWins));
                     Pantalla.logBatalla.setText(getLogBattle());
@@ -65,202 +67,166 @@ public class Procesador extends Thread {
                     Pantalla.resultado.setText(getResultado());
                     Pantalla.SO.setTurno(true);
                     this.setTurno(false);
-                    
-                    
+
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Procesador.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }else{
+            } else {
                 this.setEstado("Esperando");
                 Pantalla.estadoIA.setText(getEstado());
             }
         }
     }
-    
-    
-    public void insertarPeleadores(){
-        try{
+
+    public void insertarPeleadores() {
+        try {
             this.setzFigther(Pantalla.zFigther);
             this.setStFigther(Pantalla.stFigther);
-        }catch(Exception err){
-            System.out.println("Error insertar peleadores");
+        } catch (Exception err) {
         }
     }
-    
-    
-    public void eleccion(){
-        Random random= new Random();
-        float posibilidad=random.nextInt(10)+ random.nextFloat();
-        System.out.println(posibilidad);
-        if(posibilidad<=2.7){
+
+    public void eleccion() {
+        Random random = new Random();
+        float posibilidad = random.nextInt(10) + random.nextFloat();
+        if (posibilidad <= 2.7) {
             //Empate
             this.empate();
             setAviso(0);
-        }else if (posibilidad<=3.3){
+        } else if (posibilidad <= 3.3) {
             //No combate
             this.noCombate();
-//            this.setResultado("No Combate");
             setAviso(0);
-        }else {
+        } else {
             //Combate
             setWinner(this.combate());
-            this.setResultado(getGanador());
+            this.setResultado(getGanador() + " ganó");
             setAviso(1);
         }
     }
-    public Personaje combate(){
-        
+
+    public Personaje combate() {
+
         try {
-            boolean par=true;
+            boolean par = true;
             setLogBattle(getLogBattle() + "Inicia la batalla\n");
-            while (par==true){
-                
-                this.imprimirVida();
-                System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,,>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                System.out.println("Turno: "+getzFigther().getNombre());
+            while (par == true) {
                 setLogBattle(getLogBattle() + "Turno: " + getzFigther().getNombre() + "\n");
                 this.defensa(getzFigther(), getStFigther());
                 this.actualizarBarra();
-                if(getStFigther().getPropiedades().getPuntosVida()<=0){
-                    System.out.println("Perdedor: "+getStFigther().getNombre());
-                    System.out.println("Ganador: " +getzFigther().getNombre());
+                if (getStFigther().getPropiedades().getPuntosVida() <= 0) {
                     setLogBattle(getLogBattle() + "Perdedor: " + getStFigther().getNombre() + "\n" + "Ganador: " + getzFigther().getNombre() + "\n");
-                    Pantalla.zWins+=1;
+                    Pantalla.zWins += 1;
                     this.setGanador(this.getzFigther().getNombre());
-                    this.imprimirVida();
                     return getzFigther();
-                } else if(getzFigther().getPropiedades().getPuntosVida()<=0){
-                    System.out.println("Perdedor: "+getzFigther().getNombre());
-                    System.out.println("Ganador: " +getStFigther().getNombre());
-                    Pantalla.stWins+=1;
+                } else if (getzFigther().getPropiedades().getPuntosVida() <= 0) {
+                    Pantalla.stWins += 1;
                     setLogBattle(getLogBattle() + "Perdedor: " + getzFigther().getNombre() + "\n" + "Ganador: " + getStFigther().getNombre() + "\n");
                     this.setGanador(this.getStFigther().getNombre());
-                    this.imprimirVida();
                     return getStFigther();
-//                    break;
                 }
-                
-                
-                this.imprimirVida();
-                System.out.println("Turno: "+getStFigther().getNombre());
-                
+
                 this.defensa(getStFigther(), getzFigther());
                 this.actualizarBarra();
-                if(getzFigther().getPropiedades().getPuntosVida()<=0){
-                    System.out.println("Perdedor: "+getzFigther().getNombre());
-                    System.out.println("Ganador: " +getStFigther().getNombre());
+                if (getzFigther().getPropiedades().getPuntosVida() <= 0) {
                     setLogBattle(getLogBattle() + "Perdedor: " + getzFigther().getNombre() + "\n" + "Ganador: " + getStFigther().getNombre() + "\n");
-                    Pantalla.stWins+=1;
+                    Pantalla.stWins += 1;
                     this.setGanador(this.getStFigther().getNombre());
-                    this.imprimirVida();
-//                    Pantalla.labelCreation(stFigther, Pantalla.ganadores);
                     return getStFigther();
-//                    break;
-                } else if(getStFigther().getPropiedades().getPuntosVida()<=0){
-                    System.out.println("Perdedor: "+getStFigther().getNombre());
-                    System.out.println("Ganador: " +getzFigther().getNombre());
-                    Pantalla.zWins+=1;
+                } else if (getStFigther().getPropiedades().getPuntosVida() <= 0) {
+                    Pantalla.zWins += 1;
                     setLogBattle(getLogBattle() + "Perdedor: " + getStFigther().getNombre() + "\n" + "Ganador: " + getzFigther().getNombre() + "\n");
                     this.setGanador(this.getzFigther().getNombre());
-//                    Pantalla.labelCreation(zFigther, Pantalla.ganadores);
-                   this.imprimirVida();
                     return getzFigther();
-//                    break;
                 }
-                 this.imprimirVida();
-                System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,,>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             }
-        } catch(Exception err){
-            
+        } catch (Exception err) {
+
         }
         return null;
     }
-    public void imprimirVida(){
-        System.out.println("Vida: " + getzFigther().getNombre()+" " +getzFigther().getPropiedades().getPuntosVida());
-        System.out.println("Vida: " + getStFigther().getNombre()+" " +getStFigther().getPropiedades().getPuntosVida());
-    }
-    public void actualizarBarra(){
+
+    public void actualizarBarra() {
         Pantalla.bar1.setValue(this.getzFigther().getPropiedades().getPuntosVida());
         Pantalla.bar2.setValue(this.getStFigther().getPropiedades().getPuntosVida());
     }
-    public void defensa(Personaje atacante,  Personaje defensor){
-        
-        
-        Random rand= new Random();
-        int r= rand.nextInt(3);
-        
-        int zHab=atacante.getPropiedades().getHabilidades();
-        int zHP=atacante.getPropiedades().getPuntosVida();
-        int zAgi=atacante.getPropiedades().getAgilidad();
-        int zFuerza=atacante.getPropiedades().getFuerza();
-        
-        int stHab=defensor.getPropiedades().getHabilidades();
-        int stHP=defensor.getPropiedades().getPuntosVida();
-        int stAgi=defensor.getPropiedades().getAgilidad();
-        int stFuerza=defensor.getPropiedades().getFuerza();
-        
-      
-        
-        try{
-            
-                //Ataque 1 De Zfighter a stFighter
-                if(r==0){
-                    setLogBattle(getLogBattle() + atacante.getNombre()+" dio un " +" golpe directo"+"\n");
-                    defensor.getPropiedades().setPuntosVida(defensor.getPropiedades().getPuntosVida()-zFuerza);
-                    
-                }else if(r==1){
-                    //Agilidad. Compara el valor de agilidad con un random, si el random es mayor que el valor de agilidad recibe un golpe directo
-                    int randAg= rand.nextInt(101);
-                    if(randAg>stAgi){
-                        //Golpe directo
-                        setLogBattle(getLogBattle() + atacante.getNombre()+" dio un " +" golpe directo"+"\n");
-                        defensor.getPropiedades().setPuntosVida(defensor.getPropiedades().getPuntosVida()-zFuerza);
-                    }else if(randAg==stAgi){
-                        //Bloquea el golpe 
-                        setLogBattle(getLogBattle() + defensor.getNombre()+" bloqueo el ataque"+"\n");
-                        stHP= stHP-5;
-                        zHP= zHP-10;
-                    }else{
-                        //Esquivo con exito
-                        setLogBattle(getLogBattle() + defensor.getNombre() + " Esquivo el ataque de " +atacante.getNombre()+"\n");
-                    }
-                }else{
-                    //Habilidad. Compara el valor de habilidad con un random, si el random es mayor que el valor de habilidad recibe un golpe directo
-                    int randHab= rand.nextInt(101);
-                    if (randHab>stHab ){
-                        setLogBattle(getLogBattle() + atacante.getNombre()+" dio un " +" golpe directo\n");
-                        defensor.getPropiedades().setPuntosVida(defensor.getPropiedades().getPuntosVida()-zFuerza);
-                    }else if(randHab<=stHab){
-                        setLogBattle(getLogBattle() + defensor.getNombre() + " Devolvio el ataque de " + atacante.getNombre()+ "\n");
-                        atacante.getPropiedades().setPuntosVida( atacante.getPropiedades().getPuntosVida()-zFuerza);
-                    }
+
+    public void defensa(Personaje atacante, Personaje defensor) {
+
+        Random rand = new Random();
+        int r = rand.nextInt(3);
+
+        int zHab = atacante.getPropiedades().getHabilidades();
+        int zHP = atacante.getPropiedades().getPuntosVida();
+        int zAgi = atacante.getPropiedades().getAgilidad();
+        int zFuerza = atacante.getPropiedades().getFuerza();
+
+        int stHab = defensor.getPropiedades().getHabilidades();
+        int stHP = defensor.getPropiedades().getPuntosVida();
+        int stAgi = defensor.getPropiedades().getAgilidad();
+        int stFuerza = defensor.getPropiedades().getFuerza();
+
+        try {
+
+            //Ataque 1 De Zfighter a stFighter
+            if (r == 0) {
+                setLogBattle(getLogBattle() + atacante.getNombre() + " dio un " + " golpe directo" + "\n");
+                defensor.getPropiedades().setPuntosVida(defensor.getPropiedades().getPuntosVida() - zFuerza);
+
+            } else if (r == 1) {
+                //Agilidad. Compara el valor de agilidad con un random, si el random es mayor que el valor de agilidad recibe un golpe directo
+                int randAg = rand.nextInt(101);
+                if (randAg > stAgi) {
+                    //Golpe directo
+                    setLogBattle(getLogBattle() + atacante.getNombre() + " dio un " + " golpe directo" + "\n");
+                    defensor.getPropiedades().setPuntosVida(defensor.getPropiedades().getPuntosVida() - zFuerza);
+                } else if (randAg == stAgi) {
+                    //Bloquea el golpe 
+                    setLogBattle(getLogBattle() + defensor.getNombre() + " bloqueo el ataque" + "\n");
+                    stHP = stHP - 5;
+                    zHP = zHP - 10;
+                } else {
+                    //Esquivo con exito
+                    setLogBattle(getLogBattle() + defensor.getNombre() + " esquivo el ataque de " + atacante.getNombre() + "\n");
                 }
-            
-        }catch(Exception err){
-            
+            } else {
+                //Habilidad. Compara el valor de habilidad con un random, si el random es mayor que el valor de habilidad recibe un golpe directo
+                int randHab = rand.nextInt(101);
+                if (randHab > stHab) {
+                    setLogBattle(getLogBattle() + atacante.getNombre() + " dio un " + " golpe directo\n");
+                    defensor.getPropiedades().setPuntosVida(defensor.getPropiedades().getPuntosVida() - zFuerza);
+                } else if (randHab <= stHab) {
+                    setLogBattle(getLogBattle() + defensor.getNombre() + " devolvio el ataque de " + atacante.getNombre() + "\n");
+                    atacante.getPropiedades().setPuntosVida(atacante.getPropiedades().getPuntosVida() - zFuerza);
+                }
+            }
+
+        } catch (Exception err) {
+
         }
     }
-    public void empate(){
-         try{
-             setLogBattle(getLogBattle() + "Empate\n");
-            Pantalla.getzColaP1().encolar(this.getzFigther());            
+
+    public void empate() {
+        try {
+            setLogBattle(getLogBattle() + "Empate\n");
+            Pantalla.getzColaP1().encolar(this.getzFigther());
             Pantalla.labelCreation(getzFigther(), Pantalla.zPanelP1);
-            Pantalla.getStColaP1().encolar(this.getStFigther());            
+            Pantalla.getStColaP1().encolar(this.getStFigther());
             Pantalla.labelCreation(getStFigther(), Pantalla.stPanel1);
             this.setResultado("Empate");
-        }catch(Exception err){
-            
+        } catch (Exception err) {
+
         }
     }
-    
-    public void noCombate(){
-         try{
-             setLogBattle(getLogBattle() + "No combate\n");
-             this.setAviso2(1);
 
-            this.setResultado("Peleadores muy debiles para pelear");
-        }catch(Exception err){
-            
+    public void noCombate() {
+        try {
+            setLogBattle(getLogBattle() + "No combate\n");
+            this.setAviso2(1);
+
+            this.setResultado("Peleadores débiles");
+        } catch (Exception err) {
+
         }
     }
 

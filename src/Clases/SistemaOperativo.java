@@ -58,6 +58,12 @@ public class SistemaOperativo extends Thread {
                     this.revisarColas(Pantalla.getStColaP1(), Pantalla.getStColaP2(), Pantalla.getStColaP3(), Pantalla.getStColaP2(), Pantalla.stSemaforo, Pantalla.stPanel1, Pantalla.stPanel2, Pantalla.stPanel3);
                     this.fighterZ = this.escogerPersonajes(Pantalla.getzColaP1(), Pantalla.getzColaP2(), Pantalla.getzColaP3(), Pantalla.zSemaforo, Pantalla.zPanelP1, Pantalla.zPanel2, Pantalla.zPanel3);
                     this.figtherST = this.escogerPersonajes(Pantalla.getStColaP1(), Pantalla.getStColaP2(), Pantalla.getStColaP3(), Pantalla.stSemaforo, Pantalla.stPanel1, Pantalla.stPanel2, Pantalla.stPanel3);
+                    if (this.fighterZ == null && this.figtherST == null) {
+                        this.llenarColas(Pantalla.getPoolZelda(), Pantalla.getzColaP1(), Pantalla.getzColaP2(), Pantalla.getzColaP3(), Pantalla.zPanelP1, Pantalla.zPanel2, Pantalla.zPanel3);
+                        this.llenarColas(Pantalla.getPoolStreet(), Pantalla.getStColaP1(), Pantalla.getStColaP2(), Pantalla.getStColaP3(), Pantalla.stPanel1, Pantalla.stPanel2, Pantalla.stPanel3);
+                        this.fighterZ = this.escogerPersonajes(Pantalla.getzColaP1(), Pantalla.getzColaP2(), Pantalla.getzColaP3(), Pantalla.zSemaforo, Pantalla.zPanelP1, Pantalla.zPanel2, Pantalla.zPanel3);
+                        this.figtherST = this.escogerPersonajes(Pantalla.getStColaP1(), Pantalla.getStColaP2(), Pantalla.getStColaP3(), Pantalla.stSemaforo, Pantalla.stPanel1, Pantalla.stPanel2, Pantalla.stPanel3);
+                    }
                     Pantalla.pelea(fighterZ, Pantalla.zFighterLabel, Pantalla.zInfo1, Pantalla.zInfo2, Pantalla.zInfo3, Pantalla.zInfo4, Pantalla.zInfo5);
                     Pantalla.pelea(figtherST, Pantalla.stFigtherLabel, Pantalla.stInfo1, Pantalla.stInfo2, Pantalla.stInfo3, Pantalla.stInfo4, Pantalla.stInfo5);
                     Pantalla.zFigther = fighterZ;
@@ -114,7 +120,6 @@ public class SistemaOperativo extends Thread {
                 }
             }
         } catch (Exception err) {
-            System.out.println("error");
         }
     }
 
@@ -143,9 +148,6 @@ public class SistemaOperativo extends Thread {
                 Semaforo.release();
                 zP3.remove(zP3.getComponent(0));
                 zP3.updateUI();
-            } else {
-                this.llenarColas(Pantalla.getPoolStreet(), Pantalla.getStColaP1(), Pantalla.getStColaP2(), Pantalla.getStColaP3(), Pantalla.stPanel1, Pantalla.stPanel2, Pantalla.stPanel3);
-                this.llenarColas(Pantalla.getPoolZelda(), Pantalla.getzColaP1(), Pantalla.getzColaP2(), Pantalla.getzColaP3(), Pantalla.zPanelP1, Pantalla.zPanel2, Pantalla.zPanel3);
             }
             return aux;
         } catch (Exception err) {
